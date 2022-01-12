@@ -1,57 +1,13 @@
 import axios from '@/utils/axios'
 
-/**
- * 获取验证码接口
- * @param {*} sid 唯一标识
- */
-const getCode = (sid) => {
-  // axios.request({
-  //  method: 'get',
-  //  url: '/getCaptcha'
-  // })
-  return axios.get('/public/getCaptcha', { params: { sid } })
-}
+// 发送找回密码的邮件
+export const loginFindCode = (option) => axios.post('/login/findCode', { ...option })
 
-/**
- * 找回密码接口
- * @param {} option 用户信息（邮箱，验证码）
- */
-const forget = (option) => {
-  return axios.post('/login/forget', {
-    ...option
-  })
-}
+// 找回密码
+export const loginFindPassword = (option) => axios.post('/login/findPassword', { ...option })
 
-/**
- * 登录接口
- * @param {*} loginInfo 用户登录信息
- */
-const login = (loginInfo) => {
-  return axios.post('/login/login', {
-    ...loginInfo
-  })
-}
+// 登录
+export const loginSignIn = (loginInfo) => axios.post('/login/signIn', { ...loginInfo })
 
-/**
- * 注册接口
- * @param {*} regInfo 用户注册信息
- */
-const reg = (regInfo) => {
-  return axios.post('/login/reg', {
-    ...regInfo
-  })
-}
-
-/**
- * 重置密码接口
- * @param {*} info 重置密码信息
- */
-const reset = (info) => axios.post('/login/reset', { ...info })
-
-export {
-  getCode,
-  forget,
-  login,
-  reg,
-  reset
-}
+// 注册
+export const loginSignUp = (registerInfo) => axios.post('/login/signUp', { ...registerInfo })

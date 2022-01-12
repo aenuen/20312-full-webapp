@@ -1,46 +1,46 @@
 <template>
-  <div class="wrapper">
-    <my-header title="登录"></my-header>
-    <div class="logo">
-      <img src="@/assets/images/logo.jpg" alt />
+  <div class='wrapper'>
+    <my-header title='登录'></my-header>
+    <div class='logo'>
+      <img src='@/assets/images/logo.jpg' alt />
     </div>
-    <div class="form">
-      <validation-observer ref="observer">
+    <div class='form'>
+      <validation-observer ref='observer'>
         <validation-provider
-          tag="div"
-          class="outer"
-          name="email"
-          rules="required|email"
-          v-slot="{errors}"
+          tag='div'
+          class='outer'
+          name='email'
+          rules='required|email'
+          v-slot='{errors}'
         >
-          <div class="input-wrap" :class="{'error-outline': errors.length > 0}">
-            <svg-icon icon="person"></svg-icon>
-            <input type="text" placeholder="请输入用户名" v-model="username" />
+          <div class='input-wrap' :class="{'error-outline': errors.length > 0}">
+            <svg-icon icon='person'></svg-icon>
+            <input type='text' placeholder='请输入用户名' v-model='username' />
           </div>
-          <span class="error">{{errors[0]}}</span>
+          <span class='error'>{{ errors[0] }}</span>
         </validation-provider>
-        <div class="input-wrap">
-          <svg-icon icon="lock"></svg-icon>
-          <input type="password" placeholder="请输入密码" v-model="password" />
+        <div class='input-wrap'>
+          <svg-icon icon='lock'></svg-icon>
+          <input type='password' placeholder='请输入密码' v-model='password' />
         </div>
-        <div class="input-wrap flex">
-          <div class="code-input">
-            <svg-icon icon="images"></svg-icon>
-            <input type="text" placeholder="请输入验证码" v-model="code" />
+        <div class='input-wrap flex'>
+          <div class='code-input'>
+            <svg-icon icon='images'></svg-icon>
+            <input type='text' placeholder='请输入验证码' v-model='code' />
           </div>
-          <div v-html="svg" class="code" @click="_getCode()"></div>
+          <div v-html='svg' class='code' @click='_getCode()'></div>
         </div>
-        <div class="form-controls">
+        <div class='form-controls'>
           <router-link :to="{name: 'reg'}">注册</router-link>
           <router-link :to="{name: 'forget'}">忘记密码</router-link>
         </div>
-        <div class="btns">
-          <mt-button type="primary" @click="_login()" size="large">登录</mt-button>
+        <div class='btns'>
+          <mt-button type='primary' @click='_login()' size='large'>登录</mt-button>
         </div>
-        <div class="form-bottom">
-          <svg-icon icon="qq" class="icon-qq"></svg-icon>
-          <svg-icon icon="weixin" class="icon-weixin"></svg-icon>
-          <svg-icon icon="weibo" class="icon-weibo"></svg-icon>
+        <div class='form-bottom'>
+          <svg-icon icon='qq' class='icon-qq'></svg-icon>
+          <svg-icon icon='weixin' class='icon-weixin'></svg-icon>
+          <svg-icon icon='weibo' class='icon-weibo'></svg-icon>
         </div>
       </validation-observer>
     </div>
@@ -48,8 +48,9 @@
 </template>
 
 <script>
-import { ValidationProvider, ValidationObserver } from 'vee-validate'
+import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import { mapActions } from 'vuex'
+
 export default {
   name: 'login',
   components: {
@@ -69,11 +70,11 @@ export default {
   },
   methods: {
     ...mapActions({
-      getCode: 'user/getCode',
+      captcha: 'user/captcha',
       login: 'user/login'
     }),
     async _getCode () {
-      const result = await this.getCode()
+      const result = await this.captcha()
       if (result.code === 200) {
         // 返回到前端svg图片数据
         this.svg = result.data
@@ -97,12 +98,14 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .wrapper {
   padding: $header-height 30px 0 30px;
+
   .logo {
     padding-top: 10px;
     text-align: center;
+
     img {
       width: 40%;
     }
@@ -111,22 +114,26 @@ export default {
 
 .form {
   padding-top: 30px;
+
   .input-wrap {
     line-height: 80px;
     border-bottom: 1px solid $border-color;
     margin-bottom: 20px;
+
     input {
       width: 80%;
       outline: none;
       border: none;
       -webkit-appearance: none;
     }
+
     .svg-icon {
       font-size: 36px;
       vertical-align: middle;
       padding: 0 20px;
       color: #666;
     }
+
     // .code {
     //   float: right;
     //   position: relative;
@@ -137,12 +144,14 @@ export default {
       flex-flow: row nowrap;
       justify-content: space-between;
       align-items: center;
+
       .code-input {
         flex: 1;
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-between;
         align-items: center;
+
         input {
           width: 100%;
         }
@@ -158,6 +167,7 @@ export default {
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
+
   a {
     text-decoration: none;
     color: #999;
@@ -170,16 +180,20 @@ export default {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-around;
+
   .svg-icon {
     font-size: 60px;
     color: #666;
   }
+
   .icon-qq {
     color: #7ca9c9;
   }
+
   .icon-weibo {
     color: #e6162d;
   }
+
   .icon-weixin {
     color: #2fd63a;
   }
@@ -187,11 +201,13 @@ export default {
 
 .outer {
   position: relative;
+
   .error {
     position: absolute;
     top: -28px;
     right: 0;
   }
+
   .error-outline {
     border: 1px solid #c00;
     border-radius: 6px;

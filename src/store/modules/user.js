@@ -1,5 +1,6 @@
 import { SET_HIDE, SET_ISLOGIN, SET_MSG, SET_SID, SET_TOKEN, SET_USER } from '@/store/mutation-types'
-import { getCode, login } from '@/api/login'
+import { publicCaptcha } from '@/api/public'
+import { loginSignIn } from '@/api/login'
 import { v4 as uuid } from 'uuid'
 import { updateUserInfo, userSign } from '@/api/user'
 
@@ -51,7 +52,7 @@ export default {
       commit('setMessage', msg)
     },
     // 获取图片验证码
-    async getCode ({ commit }) {
+    async captcha ({ commit }) {
       let sid = ''
       if (localStorage.getItem('sid')) {
         sid = localStorage.getItem('sid')
@@ -61,11 +62,11 @@ export default {
       }
       // 更改app中的sid，全局vuex
       commit('SET_SID', sid) // 已经使用常量了，这里为什么还要用字符串？
-      return await getCode(sid)
+      return await publicCaptcha(sid)
     },
     // 登录
     async login ({ commit, state }, payload) {
-      const result = await login({
+      const result = await loginSignIn({
         ...payload,
         sid: state.sid
       })
