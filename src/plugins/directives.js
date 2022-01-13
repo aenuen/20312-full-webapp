@@ -1,13 +1,13 @@
-import { escapeHtml } from '@/utils/escapeHtml'
+import { escape } from 'plugins-methods'
 import store from '@/store'
 
 export default {
   richText: {
     bind: function (el, binding, vNode) {
-      el.innerHTML = escapeHtml(binding.value)
+      el.innerHTML = escape(binding.value)
     },
     componentUpdated: function (el, binding, vNode) {
-      el.innerHTML = escapeHtml(binding.value)
+      el.innerHTML = escape(binding.value)
     }
   },
   hasRole: {

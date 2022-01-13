@@ -7155,10 +7155,10 @@ pkg-dir@^4.1.0:
   dependencies:
     find-up "^4.0.0"
 
-plugins-methods@^1.0.73:
-  version "1.0.73"
-  resolved "https://registry.npmjs.org/plugins-methods/-/plugins-methods-1.0.73.tgz#1750ee0044e34dcc3e41d3bd6ebe813bcbf5ba99"
-  integrity sha512-4+qFpY1uUl9JFfd3r0JSurEPk0QgMFXDbb659acGZcwCp3L9DifWzghCoy9WH8ppxr4ytlAETMZjKEbYjbUqTw==
+plugins-methods@1.0.81:
+  version "1.0.81"
+  resolved "https://registry.npmmirror.com/plugins-methods/download/plugins-methods-1.0.81.tgz#63965b84bb0faa3c8b62d846d65dc15d8633e92d"
+  integrity sha512-cRAf4nhW6JyBO5qAzlhS31MWYiF+7M3l+ExNLmtJeJ0q7g9Q/0lnYBlbSP1Nr4uzvIWExY6VKmHSnApfYlGYPw==
 
 pnp-webpack-plugin@^1.6.4:
   version "1.7.0"

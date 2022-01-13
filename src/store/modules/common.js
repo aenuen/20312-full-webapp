@@ -8,7 +8,7 @@ export default {
   mutations: {
     [INIT_WEBSOCKET] (state, config) {
       state.ws = new WebSocketClient(config)
-      state.ws.init()
+      // state.ws.init()
     }
   }
 }

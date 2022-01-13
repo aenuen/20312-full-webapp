@@ -1,5 +1,5 @@
 import store from '@/store'
-import { wsConfig } from '@/config'
+import wsConfig from './config'
 
 class WebSocketClient {
   constructor (config = {}) {
@@ -46,9 +46,7 @@ class WebSocketClient {
     const obj = JSON.parse(event.data)
     // noinspection SpellCheckingInspection
     switch (obj.event) {
-      case 'noauth':
-        // 鉴权失败
-        // 路由跳转到 /login 重新获取token
+      case 'noauth': // 鉴权失败,路由跳转到 /login 重新获取token
         break
       case 'heartbeat':
         this.checkServer() // timeInterval + t

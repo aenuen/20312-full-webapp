@@ -1,23 +1,26 @@
 <template>
   <div class='container01'>
-    <my-header title='新增帖子' :hasBack='true' :zIndex='1000'></my-header>
+    <my-header title='新增帖子' :hasBack='true' :zIndex='1000' />
     <div class='container02'>
       <input type='text' placeholder='请输入帖子标题' v-model='title' />
-      <div class='line'></div>
-      <textarea placeholder='请输入帖子内容' v-model='content'></textarea>
+      <div class='line' />
+      <textarea placeholder='请输入帖子内容' v-model='content' />
       <div class='img-container'>
-        <div v-for='(item, index) in fileList' :key='index' class='img-box'
-             :style="{ background: 'url(' + item + ') no-repeat center' }"
+        <div
+          v-for='(item, index) in fileList'
+          :key='index'
+          class='img-box'
+          :style="{ background: 'url(' + item + ') no-repeat center' }"
         >
           <span class='delete-img' @click='deleteImg(index)'>x</span>
         </div>
         <button class='add-img' @click='chooseImg'>+</button>
       </div>
-      <div class='line'></div>
+      <div class='line' />
       <div class='flex-between' @click='showCatalog=true'>
         <span>发帖类型</span><span class='grey'>{{ catalog.value }} ></span>
       </div>
-      <div class='line'></div>
+      <div class='line' />
       <div class='flex-between' @click='showFavs=true'>
         <span>奖励积分</span><span class='grey'>{{ favs.value }} ></span>
       </div>
@@ -26,10 +29,10 @@
       </button>
     </div>
     <mt-popup v-model='showCatalog' popup-transition='popup-fade' style='width:100%'>
-      <mt-picker :slots='slots01' valueKey='value' @change='onValuesChange01'></mt-picker>
+      <mt-picker :slots='slots01' valueKey='value' @change='onValuesChange01' />
     </mt-popup>
     <mt-popup v-model='showFavs' popup-transition='popup-fade' style='width:100%'>
-      <mt-picker :slots='slots02' valueKey='value' @change='onValuesChange02'></mt-picker>
+      <mt-picker :slots='slots02' valueKey='value' @change='onValuesChange02' />
     </mt-popup>
     <input type='file' id='imgField' @change='getFile' accept='image/png, image/jpeg, image/jpg' style='display:none' />
   </div>
@@ -37,7 +40,7 @@
 
 <script>
 import { addPost, uploadImg } from '../../api/content'
-import { getMyCount } from '../../api/user'
+import { userCount } from '@/api/user'
 
 // 把图片地址拼装成标签
 const generateImageTag = imgList => {
@@ -82,9 +85,9 @@ export default {
     }
   },
   mounted () {
-    getMyCount({ // 去后台查询用户积分
-      reqFavs: 1
-    }).then(res => {
+    userCount({ // 去后台查询用户积分
+      reqIntegral: 1
+    }).then((res) => {
       const countFavs = res.countFavs
       if (countFavs < 20) {
         this.$Toast('您的积分少于 20 ，无法发帖！')

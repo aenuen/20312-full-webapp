@@ -1,7 +1,7 @@
+import { publicPath } from 'plugins-methods'
 import axios from 'axios'
 import errorHandle from './errorHandle'
 import store from '@/store'
-import { publicPath } from '@/config'
 
 const CancelToken = axios.CancelToken
 
@@ -33,7 +33,7 @@ class HttpRequest {
   interceptors (instance) {
     // 请求拦截器
     instance.interceptors.request.use(config => {
-      const token = store.state.token
+      const token = store.state.user.token
       let needToken = false
       publicPath.map((path) => {
         needToken = needToken || path.test(config.url)
@@ -73,19 +73,12 @@ class HttpRequest {
 
   // get请求
   get (url, config) {
-    return this.request(Object.assign({
-      method: 'get',
-      url
-    }, config))
+    return this.request(Object.assign({ method: 'get', url }, config))
   }
 
   // post请求
   post (url, data) {
-    return this.request({
-      method: 'post',
-      url,
-      data
-    })
+    return this.request({ method: 'post', url, data })
   }
 }
 

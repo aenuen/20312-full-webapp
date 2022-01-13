@@ -124,7 +124,7 @@ const routes = [
   {
     path: '/newPost',
     name: 'newPost',
-    component: import(/* webpackChunkName: 'newPost' */ '@/views/newPost'),
+    component: require(/* webpackChunkName: 'newPost' */ '@/views/newPost').default,
     meta: { requiresAuth: true }
   },
   // 我的收藏

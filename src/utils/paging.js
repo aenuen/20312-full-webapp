@@ -40,8 +40,7 @@ class Paging {
         return
       }
       if (list.length < this.#limitObj[1] || list.length === 0) {
-        // 如果后台取得的数组为空或者小于当前页的显示数量，说明数据已经全部加载
-        this.#isEnd = true
+        this.#isEnd = true // 如果后台取得的数组为空或者小于当前页的显示数量，说明数据已经全部加载
       }
       this.dataList.push(...res[this.#resKey])
       this.#currentObj[1]++
