@@ -1,5 +1,5 @@
 import HttpRequest from './HttpRequest'
-import { axiosConfig } from '@/config'
+import axiosConfig from './config'
 
 const axios = new HttpRequest(axiosConfig.baseUrl)
 

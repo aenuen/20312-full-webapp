@@ -1,0 +1,78 @@
+@import '../../../assets/styles/_mixin';
+@import "../../../assets/styles/_variables";
+
+.container {
+  padding-top: $header-height;
+
+  .content-box {
+    padding: 0 30px;
+
+    .content-item {
+      align-items: center;
+      @extend %border-line;
+    }
+
+    .column {
+      flex: 1;
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: space-between;
+      height: 150px;
+      padding: 30px 20px;
+
+      .title {
+        color: #333;
+        font-size: 30px;
+        font-weight: bold;
+        overflow: hidden;
+        line-height: 38px;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+      }
+    }
+
+    .flex {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+    }
+
+    .tags {
+      font-size: 24px;
+      color: #fff;
+      background: $primary-color;
+      border-radius: 24px 24px 24px 0;
+      padding: 4px 12px;
+      margin-right: 10px;
+      display: inline-block;
+      transform: scale(0.8);
+      position: relative;
+      top: -2px;
+
+      &.color1 {
+        background: #0166f8;
+      }
+    }
+
+    .bottom {
+      color: #999;
+      font-size: 24px;
+
+      .reads {
+        margin-right: 20px;
+      }
+    }
+
+    .svg-icon {
+      font-size: 36px;
+    }
+
+    .noMore {
+      color: #999;
+      font-size: 24px;
+      text-align: center;
+      padding: 30px;
+    }
+  }
+}

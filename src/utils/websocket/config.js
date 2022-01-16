@@ -1,4 +1,4 @@
-import { isDevMode } from '@/config'
+export const isDevMode = process.env.NODE_ENV === 'development'
 
 const wsConfig = {
   url: isDevMode ? '127.0.0.1' : '127.0.0.1',

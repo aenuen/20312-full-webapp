@@ -1,0 +1,83 @@
+@import '../../../assets/styles/_mixin';
+@import "../../../assets/styles/_variables";
+
+.container {
+  // padding-top: $header-height + 10;
+  padding-top: $header-height;
+  width: 100%;
+  height: 100%;
+  background: #f6f6f6;
+
+  .content-box {
+    background: #fff;
+    padding: 0 30px;
+
+    .flex {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+    }
+
+    .content-item {
+      align-items: center;
+      padding: 30px 20px;
+      @extend %border-line;
+    }
+
+    .title {
+      color: #333;
+      font-size: 30px;
+      font-weight: bold;
+      overflow: hidden;
+      line-height: 38px;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      margin-bottom: 15px;
+    }
+
+    .desc {
+      font-size: 24px;
+      color: #666;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 32px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      margin-bottom: 30px;
+    }
+
+    .header {
+      margin-bottom: 30px;
+
+      span {
+        font-size: 26px;
+        font-weight: bold;
+        color: rgba(51, 51, 51, 1);
+        margin-left: 10px;
+      }
+
+      .img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+      }
+    }
+
+    .bottom {
+      color: #999;
+      font-size: 24px;
+
+      .reads,
+      .hands {
+        margin-right: 20px;
+      }
+    }
+
+    .svg-icon {
+      font-size: 36px;
+    }
+  }
+}

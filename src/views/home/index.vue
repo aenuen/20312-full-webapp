@@ -1,15 +1,16 @@
 <template>
   <div>
     <layout>
-      <search></search>
-      <tabs></tabs>
-      <router-view></router-view>
+      <search />
+      <tabs />
+      <router-view />
     </layout>
   </div>
 </template>
 
 <script>
 import Tabs from './tabs'
+
 export default {
   name: 'Home',
   components: {
@@ -18,5 +19,5 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 </style>

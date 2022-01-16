@@ -1,23 +1,25 @@
 <template>
   <div>
-    <ul class="layout-footer" ref="footer">
+    <ul class='layout-footer' ref='footer'>
       <router-link
-        v-for="(tab, index) in tabs"
+        v-for='(tab, index) in tabs'
         :key="'tabs-' + index"
-        :to="tab.path"
-        class="item"
-        active-class="active"
+        :to='tab.path'
+        class='item'
+        active-class='active'
       >
-        <svg-icon :icon="tab.icon" :class="['svg-icon-'+ tab.icon]"></svg-icon>
-        <p>{{tab.name}}</p>
+        <svg-icon :icon='tab.icon' :class="['svg-icon-'+ tab.icon]"></svg-icon>
+        <p>{{ tab.name }}</p>
       </router-link>
     </ul>
   </div>
 </template>
 
 <script>
+import { forbidScroll } from '@/utils/forbidScroll'
+
 export default {
-  name: 'my-footer',
+  name: 'MyFooter',
   data () {
     return {
       tabs: [
@@ -29,12 +31,13 @@ export default {
     }
   },
   mounted () {
+    window.forbidScroll = forbidScroll
     const elem = this.$refs.footer
     window.forbidScroll(elem)
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 @import './footer.scss';
 </style>

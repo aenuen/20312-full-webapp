@@ -1,20 +1,21 @@
+<!--suppress HtmlUnknownAttribute, JSUnresolvedFunction -->
 <template>
   <div>
-    <my-header :title="page.title || '页面详情'" :hasBack='true' :zIndex='1000' />
+    <my-header :title="detail.title || '页面详情'" :hasBack='true' :zIndex='1000' />
     <div class='wrapper'>
-      <div class='detail-head'>{{ page.title }}</div>
+      <div class='detail-head'>{{ detail.title }}</div>
       <div class='detail-info'>
         <div class='detail-info-head'>
           <div class='avatar'>
-            <img :src='page.uid && page.uid.pic' alt />
+            <img :src='detail.uid && detail.uid.avatar' alt />
           </div>
           <div class='cont'>
-            <p class='name'>{{ page.uid && page.uid.name }}</p>
-            <p class='time'>{{ page.created | moment }}</p>
+            <p class='name'>{{ detail.uid && detail.uid.name }}</p>
+            <p class='time'>{{ detail.created | dateDist }}</p>
           </div>
         </div>
-        <div class='detail-info-body' v-richText='page.content'></div>
-        <div class='detail-info-foot'>{{ page.reads }} 阅读</div>
+        <div class='detail-info-body' v-richText='detail.content' />
+        <div class='detail-info-foot'>{{ detail.reads }} 阅读</div>
       </div>
       <div class='comments'>
         <div class='title'>评论</div>
@@ -28,19 +29,19 @@
             <div class='detail-info-head'>
               <div class='user'>
                 <div class='avatar'>
-                  <img :src='item.cuid && item.cuid.pic' alt />
+                  <img :src='item.uid && item.uid.avatar' alt />
                 </div>
                 <div class='cont'>
-                  <p class='name'>{{ item.cuid && item.cuid.name }}</p>
-                  <p class='time'>{{ item.created | moment }}・评论了帖子</p>
+                  <p class='name'>{{ item.uid && item.uid.name }}</p>
+                  <p class='time'>{{ item.created | dateDist }}・评论了帖子</p>
                 </div>
               </div>
-              <div class='hands' @click='test()'>
-                <svg-icon icon='zan'></svg-icon>
-                <span>{{ item.hands }}</span>
+              <div class='hands' @click='setLike(item)'>
+                <svg-icon icon='zan' />
+                <span>{{ item.like }}</span>
               </div>
             </div>
-            <div class='detail-body' v-richText='item.content'></div>
+            <div class='detail-body' v-richText='item.content' />
           </li>
         </ul>
         <div class='info' v-if='comments.length === 0'>暂无评论，赶紧来抢沙发吧~~~</div>
@@ -73,13 +74,13 @@
           <svg-icon icon='bianji' />
           <p>
             <span v-show='showText'>评论</span>
-            {{ page.answer }}
+            {{ detail.answer }}
           </p>
         </li>
-        <li :class="{'row': !showText}" @click='collect(page._id)'>
+        <li :class="{'row': !showText}" @click='collect(detail._id)'>
           <svg-icon icon='shoucang' />
           <p>
-            <span v-show='showText'>{{ page.isCollect ? '取消收藏' : '收藏' }}</span>
+            <span v-show='showText'>{{ detail.isCollect ? '取消收藏' : '收藏' }}</span>
           </p>
         </li>
       </ul>
@@ -89,33 +90,35 @@
         <li class='detail-face-item' v-for='(value,key) in faces' :key="'face-' + key">
           <img :src='value' alt />
         </li>
-        <li class='clear'></li>
+        <li class='clear' />
       </ul>
     </div>
   </div>
 </template>
 
 <script>
-import BScroll from '@better-scroll/core'
-import faces from '@/assets/js/face'
-import { addCollect, getDetail } from '@/api/content'
-import { addComment, getComents } from '@/api/comments'
+import MyHeader from '@/components/Header'
+import BScroll from 'better-scroll'
+import { publicCommentList, publicPostDetail } from '@/api/public'
+import { collectToggle } from '@/api/collect'
+import { commentMCreate, commentSetLike } from '@/api/comment'
 import Paging from '../../utils/paging'
 import { mapGetters } from 'vuex'
+import { faces } from 'plugins-methods'
+import DataComments from './modules/data_comments'
+import DataDetail from './modules/data_detail'
 
 export default {
   name: 'detail',
-  props: ['tid'],
+  props: ['pid'],
+  components: {
+    MyHeader
+  },
   data () {
     return {
-      faces: faces,
-      page: {},
-      comments: [],
-      editInfo: {
-        content: '',
-        code: '',
-        sid: ''
-      },
+      faces,
+      comments: DataComments,
+      detail: DataDetail,
       showText: true,
       loading: false,
       isEnd: false,
@@ -137,7 +140,7 @@ export default {
     document.removeEventListener('touchstart', faceHandler)
     document.addEventListener('touchstart', faceHandler)
     this.paging = new Paging( // 初始化分页对象
-      getComents, // 后台请求数据的 api
+      publicCommentList, // 后台请求数据的 api
       { page: 0, limit: 10 }, // 后台分页初始化参数
       this.comments // 前端渲染用的数组
     )
@@ -149,16 +152,19 @@ export default {
     })
   },
   watch: {
-    faceStatus (newval, oldval) {
-      if (!newval) {
+    faceStatus (nVal) {
+      if (!nVal) {
         this.scroll.scrollTo(0, 0)
       }
     },
-    tid () { // 实时刷新页面
+    pid () { // 实时刷新页面
       this.paging.clear()
       this.getPostDetail()
       this.getCommentsList()
     }
+  },
+  created () {
+    this.comments = []
   },
   methods: {
     showFace () {
@@ -166,6 +172,16 @@ export default {
       if (this.faceStatus) {
         this.scroll = new BScroll(this.$refs.faces)
       }
+    },
+    setLike (item) {
+      commentSetLike({ cid: item._id }).then(({ code, msg, data }) => {
+        if (code === 200) {
+          item.like += data
+          this.$Toast(msg)
+        } else {
+          this.$Toast(msg)
+        }
+      })
     },
     focus () {
       this.isFocus = true
@@ -180,26 +196,29 @@ export default {
       this.getCommentsList()
     },
     getPostDetail () {
-      getDetail(this.tid).then((res) => {
-        if (res.code === 200) {
-          this.page = res.data
+      publicPostDetail({ pid: this.pid }).then(({ code, data }) => {
+        if (code === 200) {
+          this.detail = data
         }
       })
     },
     getCommentsList () {
-      this.paging.next({ tid: this.tid }, res => {
+      this.paging.next({ pid: this.pid }, () => {
         this.loading = false
-        // console.log(res)
       })
     },
-    collect (postid) {
+    collect (pid) {
       this.$Loading.show()
-      addCollect({ tid: postid, isCollect: this.page.isCollect }).then(res => {
-        if (res.code === 200) {
-          this.page.isCollect = res.isCollect
+      collectToggle({
+        title: this.detail.title,
+        pid: pid,
+        isCollect: this.detail.isCollect
+      }).then(({ code, msg }) => {
+        if (code === 200) {
+          this.detail.isCollect = !this.detail.isCollect
         }
         this.$Loading.close()
-        this.$Toast(res.msg)
+        this.$Toast(msg)
       })
     },
     submitComment () {
@@ -212,19 +231,21 @@ export default {
         return
       }
       this.$Loading.show()
-      addComment({
-        tid: this.page._id,
-        uid: this.page.uid._id,
-        cuid: this.user._id,
+      commentMCreate({
+        pid: this.detail._id,
+        uid: this.detail.uid._id,
+        hUid: this.user._id,
         content: this.commentContent
-      }).then(res => {
+      }).then(({ code, msg }) => {
         this.$Loading.close()
-        if (res.code === 200) {
+        if (code === 200) {
           this.loading = true
           this.paging.clear()
+          this.detail.answer = +this.detail.answer + 1
+          this.commentContent = ''
           this.getCommentsList()
         }
-        this.$Toast(res.msg)
+        this.$Toast(msg)
       })
     }
   }
@@ -232,5 +253,5 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-@import './detail.scss';
+@import 'style';
 </style>

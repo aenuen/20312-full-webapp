@@ -17,7 +17,6 @@ const Reg = () => import(/* webpackChunkName: 'reg' */ '@/views/user/reg')
 const Forget = () =>
   import(/* webpackChunkName: 'forget' */ '@/views/user/forget')
 
-const User = () => import(/* webpackChunkName: 'forget' */ '@/views/user/user')
 const Hot = () => import(/* webpackChunkName: 'hot' */ '@/views/hot')
 const Msg = () => import(/* webpackChunkName: 'msg' */ '@/views/msg')
 // 修改密码
@@ -26,11 +25,6 @@ const Passwd = () =>
 // 修改个人设置
 const Settings = () =>
   import(/* webpackChunkName: 'settings' */ '@/views/user/settings')
-// 我的帖子
-const MyPost = () =>
-  import(/* webpackChunkName: 'mypost' */ '@/views/user/mypost')
-// 我的收藏
-const MyFav = () => import(/* webpackChunkName: 'myfav' */ '@/views/user/myfav')
 // 浏览历史
 const MyHistory = () => import(/* webpackChunkName: 'myhisory' */ '@/views/user/myhistory')
 // 我的签到
@@ -72,7 +66,7 @@ const routes = [
   },
   // 详情页
   {
-    path: '/detail/:tid',
+    path: '/detail/:pid',
     name: 'detail',
     props: true,
     component: Detail
@@ -97,7 +91,7 @@ const routes = [
   {
     path: '/user',
     name: 'user',
-    component: User
+    component: require(/* webpackChunkName: 'user' */ '@/views/user/user/index').default
   },
   // 修改设置
   {
@@ -115,9 +109,9 @@ const routes = [
   },
   // 我的帖子
   {
-    path: '/mypost',
-    name: 'mypost',
-    component: MyPost,
+    path: '/myPost',
+    name: 'myPost',
+    component: require(/* webpackChunkName: 'myPost' */ '@/views/user/myPost/index').default,
     meta: { requiresAuth: true }
   },
   // 新增帖子
@@ -129,9 +123,9 @@ const routes = [
   },
   // 我的收藏
   {
-    path: '/myfav',
-    name: 'myfav',
-    component: MyFav,
+    path: '/myCollect',
+    name: 'myCollect',
+    component: require(/* webpackChunkName: 'myCollect' */ '@/views/user/myCollect').default,
     meta: { requiresAuth: true }
   },
   // 我的历史

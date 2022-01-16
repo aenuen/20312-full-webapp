@@ -18,11 +18,13 @@
       </div>
       <div class='line' />
       <div class='flex-between' @click='showCatalog=true'>
-        <span>发帖类型</span><span class='grey'>{{ catalog.value }} ></span>
+        <span>发帖类型</span>
+        <span class='grey'>{{ catalog.value }} ></span>
       </div>
       <div class='line' />
-      <div class='flex-between' @click='showFavs=true'>
-        <span>奖励积分</span><span class='grey'>{{ favs.value }} ></span>
+      <div class='flex-between' @click='showIntegral=true'>
+        <span>奖励积分</span>
+        <span class='grey'>{{ integral.value }} ></span>
       </div>
       <button class='submit' @click='submit' :style="{ background: isValidate ? '#02D199' : '#CCCCCC' }">
         发布
@@ -31,7 +33,7 @@
     <mt-popup v-model='showCatalog' popup-transition='popup-fade' style='width:100%'>
       <mt-picker :slots='slots01' valueKey='value' @change='onValuesChange01' />
     </mt-popup>
-    <mt-popup v-model='showFavs' popup-transition='popup-fade' style='width:100%'>
+    <mt-popup v-model='showIntegral' popup-transition='popup-fade' style='width:100%'>
       <mt-picker :slots='slots02' valueKey='value' @change='onValuesChange02' />
     </mt-popup>
     <input type='file' id='imgField' @change='getFile' accept='image/png, image/jpeg, image/jpg' style='display:none' />
@@ -39,66 +41,49 @@
 </template>
 
 <script>
-import { addPost, uploadImg } from '../../api/content'
+import MyHeader from '@/components/Header'
+import DataSlots01 from './modules/data_slots01'
+import DataSlots02 from './modules/data_slots02'
+import { contentUpload } from '@/api/content'
 import { userCount } from '@/api/user'
-
-// 把图片地址拼装成标签
-const generateImageTag = imgList => {
-  let tagStr = ''
-  imgList.forEach(item => {
-    tagStr += '<br /><img src="' + item + '" style="max-width:90%;" /><br />'
-  })
-  return tagStr
-}
+import { postMCreate } from '@/api/post'
 
 export default {
   name: 'newPost',
+  components: { MyHeader },
   data () {
     return {
       title: '',
       content: '',
       showCatalog: false,
-      showFavs: false,
+      showIntegral: false,
       fileList: [],
-      slots01: [
-        {
-          values: [
-            { key: '', value: '请选择' },
-            { key: 'ask', value: '提问' },
-            { key: 'share', value: '分享' },
-            { key: 'discuss', value: '讨论' },
-            { key: 'advise', value: '建议' }
-          ],
-          textAlign: 'center'
-        }
-      ],
-      slots02: [
-        {
-          values: [
-            { key: '', value: '请选择' }
-          ],
-          textAlign: 'center'
-        }
-      ],
+      slots01: DataSlots01,
+      slots02: DataSlots02,
       catalog: {},
-      favs: {}
+      integral: {}
+    }
+  },
+  computed: {
+    isValidate () {
+      return !!(this.title && this.content)
     }
   },
   mounted () {
-    userCount({ // 去后台查询用户积分
-      reqIntegral: 1
-    }).then((res) => {
-      const countFavs = res.countFavs
-      if (countFavs < 20) {
-        this.$Toast('您的积分少于 20 ，无法发帖！')
-        return
-      }
-      const tempFavs = [20, 50, 80, 200, 500]
-      tempFavs.forEach(item => {
-        if (item <= countFavs) {
-          this.slots02[0].values.push({ key: item, value: item + '积分' })
+    userCount({ reqIntegral: 1 }).then(({ code, data }) => {
+      if (code === 200) {
+        const { countIntegral } = data
+        if (countIntegral < 20) {
+          this.$Toast('您的积分少于 20 ，无法发帖！')
+        } else {
+          const tempIntegral = [20, 50, 80, 200, 500]
+          tempIntegral.forEach(item => {
+            if (item <= countIntegral) {
+              this.slots02[0].values.push({ key: `${item}`, value: `${item}积分` })
+            }
+          })
         }
-      })
+      }
     })
   },
   methods: {
@@ -112,126 +97,57 @@ export default {
       const img = e.target.files[0]
       if (img.size > 3145728) {
         this.$Toast('请选择3M以内的图片！')
-        return
+      } else {
+        this.$Loading.show()
+        const form = new FormData()
+        form.append('file', img, img.name)
+        contentUpload(form).then(({ code, msg, data }) => {
+          this.$Loading.close()
+          if (code === 200) {
+            this.fileList.push(data)
+          } else {
+            this.$Toast(msg)
+          }
+        })
       }
-      this.$Loading.show()
-      const form = new FormData()
-      form.append('file', img, img.name)
-      uploadImg(form).then(res => {
-        this.$Loading.close()
-        if (res.code === 200) {
-          this.fileList.push(res.data)
-        } else {
-          this.$Toast(res.msg)
-        }
-      })
     },
     onValuesChange01 (picker, values) {
       this.catalog = values[0]
     },
     onValuesChange02 (picker, values) {
-      this.favs = values[0]
+      this.integral = values[0]
+    },
+    generateImageTag (imgList) { // 把图片地址拼装成标签
+      let tagStr = ''
+      imgList.forEach(item => {
+        tagStr += '<br /><img src="' + item + '" style="max-width:90%;" alt /><br />'
+      })
+      return tagStr
     },
     submit () {
-      if (!this.isValidate) {
-        return
+      if (this.isValidate) {
+        this.$Loading.show()
+        postMCreate({
+          title: this.title,
+          catalog: 'ask',
+          integral: '20',
+          content: (this.content + this.generateImageTag(this.fileList))
+        }).then(({ code, msg }) => {
+          this.$Loading.close()
+          if (code === 200) {
+            Object.assign(this.$data, this.$options.data.call(this)) // 清空当前页面的数据
+            this.$Toast('发帖成功！')
+            this.$router.back()
+          } else {
+            this.$Toast(msg)
+          }
+        })
       }
-      this.$Loading.show()
-      addPost({
-        title: this.title,
-        catalog: this.catalog.key,
-        fav: this.favs.key,
-        content: (this.content + generateImageTag(this.fileList))
-      }).then(res => {
-        this.$Loading.close()
-        if (res.code === 200) {
-          Object.assign(this.$data, this.$options.data.call(this)) // 清空当前页面的数据
-          this.$Toast('发帖成功！')
-          this.$router.back()
-        } else {
-          this.$Toast(res.msg)
-        }
-      })
-    }
-  },
-  computed: {
-    isValidate () {
-      if (this.title && this.content && this.catalog.key && this.favs.key) {
-        return true
-      }
-      return false
     }
   }
 }
 </script>
 
 <style scoped>
-@import '../../assets/styles/flex.css';
-
-input, textarea {
-  border: 0;
-  width: 100%;
-  outline: none;
-}
-
-textarea {
-  height: 200px;
-}
-
-.container01 {
-  padding-top: 100px;
-}
-
-.container02 {
-  padding: 20px;
-}
-
-.line {
-  margin: 20px 0;
-  height: 1px;
-  background-color: #DDDDDD;
-}
-
-::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-  color: rgba(204, 204, 204, 1);
-}
-
-.img-container {
-  display: flex;
-}
-
-.img-box {
-  width: 160px;
-  height: 160px;
-  margin-right: 20px;
-  text-align: right;
-}
-
-.delete-img {
-  width: 48px;
-  height: 48px;
-  opacity: 0.48;
-}
-
-.add-img {
-  width: 160px;
-  height: 160px;
-  border: 0;
-  color: #CCCCCC;
-  font-size: 50px;
-  font-family: cursive;
-}
-
-.grey {
-  color: #999999;
-}
-
-.submit {
-  margin-top: 200px;
-  width: 100%;
-  height: 80px;
-  border: 0;
-  color: #FFFFFF;
-  border-radius: 8px;
-}
+@import "style.scss";
 </style>

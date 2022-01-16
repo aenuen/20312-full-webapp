@@ -2,6 +2,9 @@ import axios from '@/utils/axios'
 import qs from 'qs'
 import store from '@/store'
 
+// 上传文件
+export const contentUpload = (formData) => axios.post('/content/upload', formData)
+
 /**
  * 读取文章列表
  * @param {Object} options 读取文章列表接口参数

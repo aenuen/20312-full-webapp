@@ -16,8 +16,8 @@ export const publicLinkList = (params) => axios.get('/public/linkList?' + qs.str
 
 // 帖子详情
 export const publicPostDetail = (params) => {
-  const token = store.state.token
-  const headers = token ? { headers: { Authorization: 'Bearer ' + store.state.token } } : {}
+  const token = store.state.user.token
+  const headers = token ? { headers: { Authorization: 'Bearer ' + token } } : {}
   return axios.get('/public/postDetail?' + qs.stringify(params), headers)
 }
 

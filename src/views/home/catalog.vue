@@ -32,7 +32,6 @@ export default {
     return {
       page: 0,
       limit: 10,
-      // catalog: '',
       lists: [],
       isEnd: false,
       isRepeat: false,
@@ -55,9 +54,7 @@ export default {
   },
   methods: {
     initHeight () {
-      this.footerHeight = document.getElementsByClassName(
-        'layout-footer'
-      )[0].offsetHeight
+      this.footerHeight = document.getElementsByClassName('layout-footer')[0].offsetHeight
     },
     init () {
       if (typeof this.handle === 'function') {
@@ -86,43 +83,35 @@ export default {
         page: this.page,
         limit: this.limit,
         sort: 'created'
+      }).then(({ code, data }) => {
+        this.isRepeat = false // 加入一个请求锁，防止用户多次点击，等待数据返回后，再打开
+        if (code === 200) {
+          if (data.length < this.limit) { // 判断res.data的长度，如果小于20条，则是最后页
+            this.isEnd = true
+          }
+          if (this.lists.length === 0) {
+            this.lists = data
+          } else {
+            this.lists = this.lists.concat(data)
+          }
+        }
+        if (typeof this.handle === 'function') {
+          this.handle()
+        }
+        this.initHeight()
+      }).catch((err) => {
+        this.isRepeat = false
+        if (err) {
+          this.$Toast(err.message)
+        }
       })
-        .then(({ code, data }) => {
-          this.isRepeat = false // 加入一个请求锁，防止用户多次点击，等待数据返回后，再打开
-          // 对于异常的判断，res.code 非200，我们给用户一个提示
-          // 判断是否lists长度为0，如果为零即可以直接赋值
-          // 当Lists长度不为0，后面请求的数据，加入到Lists里面来
-          if (code === 200) {
-            if (data.length < this.limit) { // 判断res.data的长度，如果小于20条，则是最后页
-              this.isEnd = true
-            }
-            if (this.lists.length === 0) {
-              this.lists = data
-            } else {
-              this.lists = this.lists.concat(data)
-            }
-          }
-          if (typeof this.handle === 'function') {
-            this.handle()
-          }
-          this.initHeight()
-        })
-        .catch((err) => {
-          this.isRepeat = false
-          if (err) {
-            this.$Toast(err.message)
-          }
-        })
     },
     goUser (id) {
-      // console.log('goUser -> id', id)
     },
-    goDetail (tid) {
-      // console.log('goDetail -> tid', tid)
-      this.$router.push({ name: 'detail', params: { tid } })
+    goDetail (pid) {
+      this.$router.push({ name: 'detail', params: { pid } })
     },
     goNewPost () {
-      // console.log('addPost...')
     }
   }
 }

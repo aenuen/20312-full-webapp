@@ -1,3 +1,5 @@
+// noinspection JSUnresolvedVariable,JSUnusedGlobalSymbols
+
 import { escape } from 'plugins-methods'
 import store from '@/store'
 

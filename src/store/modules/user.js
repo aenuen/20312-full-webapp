@@ -14,29 +14,25 @@ export default {
     isHide: false
   },
   mutations: {
-    [SET_SID] (state, value) {
+    [SET_SID] (state, value) { // 设置SID
       state.sid = value
     },
-    [SET_TOKEN] (state, value) {
+    [SET_TOKEN] (state, value) { // 设置TOKEN
       state.token = value
       localStorage.setItem('token', value)
     },
-    // 设置用户的基本信息
-    [SET_USER] (state, value) {
+    [SET_USER] (state, value) { // 设置用户的基本信息
       if (value === '') return
       state.userInfo = value
-      // 本地存储用户的基本信
-      localStorage.setItem('userInfo', JSON.stringify(value))
+      localStorage.setItem('userInfo', JSON.stringify(value)) // 存储用户的基本信息
     },
-    // 设置isLogin的状态
-    [SET_ISLOGIN] (state, value) {
+    [SET_ISLOGIN] (state, value) { // 设置isLogin的状态
       state.isLogin = value
     },
-    // 设置container的状态
-    [SET_HIDE] (state, value) {
+    [SET_HIDE] (state, value) { // 设置container的状态
       state.isHide = value
     },
-    [SET_MSG] (state, value) {
+    [SET_MSG] (state, value) { // 设置消息
       state.num = value
     }
   },
@@ -51,8 +47,7 @@ export default {
     message ({ commit }, msg) {
       commit('setMessage', msg)
     },
-    // 获取图片验证码
-    async captcha ({ commit }) {
+    async captcha ({ commit }) { // 获取图片验证码
       let sid = ''
       if (localStorage.getItem('sid')) {
         sid = localStorage.getItem('sid')
@@ -60,21 +55,19 @@ export default {
         sid = uuid()
         localStorage.setItem('sid', sid)
       }
-      // 更改app中的sid，全局vuex
-      commit('SET_SID', sid) // 已经使用常量了，这里为什么还要用字符串？
-      return await publicCaptcha(sid)
+      commit('SET_SID', sid) // 更改app中的sid，全局vuex
+      return publicCaptcha(sid)
     },
-    // 登录
-    async login ({ commit, state }, payload) {
+    async login ({ commit, state }, payload) { // 登录
       const result = await loginSignIn({
         ...payload,
         sid: state.sid
       })
-      if (result.code === 200 && result.token) {
-        const userInfo = result.data
-        userInfo.username = payload.username
-        commit('SET_TOKEN', result.token)
-        commit('SET_USER', userInfo)
+      const { code, data, token } = result
+      if (code === 200 && token) {
+        data.email = payload.email
+        commit('SET_TOKEN', token)
+        commit('SET_USER', data)
         commit('SET_ISLOGIN', true)
       }
       return result
@@ -82,12 +75,11 @@ export default {
     // 签到
     async signX ({ commit, state }) {
       const { userInfo } = state
-      // console.log(userInfo)
-      // console.log(typeof userSign)
       const result = await userSign()
-      userInfo.favs = result.favs
-      userInfo.count = result.count
-      userInfo.lastSign = result.lastSign
+      const { integral, count, lastSign } = result
+      userInfo.integral = integral
+      userInfo.count = count
+      userInfo.lastSign = lastSign
       userInfo.isSign = true
       commit(SET_USER, userInfo)
       return result
@@ -95,13 +87,13 @@ export default {
     // 更新用户信息
     async updateUserInfoX ({ commit, state }, form) {
       const result = await updateUserInfo(form)
-      if (result.code === 200) {
-        // 更新本地缓存中的 userInfo
+      const { code } = result
+      if (code === 200) {
         const { userInfo } = state
         Object.keys(form).forEach(key => {
           userInfo[key] = form[key]
         })
-        commit(SET_USER, userInfo)
+        commit(SET_USER, userInfo) // 更新本地缓存中的 userInfo
       }
       return result
     }
