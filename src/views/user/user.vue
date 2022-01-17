@@ -53,17 +53,19 @@
           </li>
         </ul>
       </div>
-      <my-footer></my-footer>
+      <my-footer />
     </div>
   </div>
 </template>
 
 <script>
+import MyFooter from '@/components/Layout/footer'
 import { mapGetters } from 'vuex'
 import { userCount } from '@/api/user'
 
 export default {
   name: 'user',
+  components: { MyFooter },
   data () {
     return {
       lists: [

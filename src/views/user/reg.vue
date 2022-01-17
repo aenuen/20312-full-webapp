@@ -39,7 +39,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { loginSignUp } from '@/api/login'
+import loginDispatch from '@/api/login'
 
 export default {
   name: 'reg',
@@ -73,7 +73,7 @@ export default {
       this.$router.back()
     },
     async submit () {
-      const result = await loginSignUp({
+      const result = await loginDispatch.use('signUp', {
         sid: this.$store.state.user.sid,
         username: this.username,
         password: this.password,

@@ -100,9 +100,9 @@
 import MyHeader from '@/components/Header'
 import BScroll from 'better-scroll'
 import { publicCommentList, publicPostDetail } from '@/api/public'
-import { collectToggle } from '@/api/collect'
+import { collectDispatch } from '@/api/collect'
 import { commentMCreate, commentSetLike } from '@/api/comment'
-import Paging from '../../utils/paging'
+import Paging from '@/libs/paging'
 import { mapGetters } from 'vuex'
 import { faces } from 'plugins-methods'
 import DataComments from './modules/data_comments'
@@ -208,18 +208,22 @@ export default {
       })
     },
     collect (pid) {
-      this.$Loading.show()
-      collectToggle({
-        title: this.detail.title,
-        pid: pid,
-        isCollect: this.detail.isCollect
-      }).then(({ code, msg }) => {
-        if (code === 200) {
-          this.detail.isCollect = !this.detail.isCollect
-        }
-        this.$Loading.close()
-        this.$Toast(msg)
-      })
+      if (this.isLogin) {
+        this.$Loading.show()
+        collectDispatch.use('toggle', {
+          title: this.detail.title,
+          pid: pid,
+          isCollect: this.detail.isCollect
+        }).then(({ code, msg }) => {
+          if (code === 200) {
+            this.detail.isCollect = !this.detail.isCollect
+          }
+          this.$Loading.close()
+          this.$Toast(msg)
+        })
+      } else {
+        this.$Toast('还未登录无法收藏！')
+      }
     },
     submitComment () {
       if (!this.isLogin) {

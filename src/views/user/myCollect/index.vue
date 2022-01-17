@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import Paging from '@/utils/paging'
+import Paging from '@/libs/paging'
 import { collectList } from '@/api/collect'
 
 export default {

@@ -1,4 +1,4 @@
-import axios from '@/utils/axios'
+import axios from '@/libs/axios'
 import qs from 'qs'
 
 // 用户签到

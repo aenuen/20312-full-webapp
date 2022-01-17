@@ -1,4 +1,4 @@
-import axios from '@/utils/axios'
+import axios from '@/libs/axios'
 import qs from 'qs'
 
 // 获取热门文章

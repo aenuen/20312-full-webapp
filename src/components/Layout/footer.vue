@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { forbidScroll } from '@/utils/forbidScroll'
+import { forbidScroll } from '@/libs/forbidScroll'
 
 export default {
   name: 'MyFooter',

@@ -1,15 +1,15 @@
 <template>
-  <div class="search-wrap" ref="search">
-    <slot name="h-left"></slot>
-    <div class="search-block" :class="{'searching': searchText}">
-      <i class="mintui mintui-search"></i>
-      <input type="text" class="in" v-model="searchText" :placeholder="placeHolderIn" />
-      <span @click.stop="onClear()">
-        <svg-icon icon="close" :className="'svg-icon-close'" v-if="searchText"></svg-icon>
+  <div class='search-wrap' ref='search'>
+    <slot name='h-left'></slot>
+    <div class='search-block' :class="{'searching': searchText}">
+      <i class='mintui mintui-search'></i>
+      <input type='text' class='in' v-model='searchText' :placeholder='placeHolderIn' />
+      <span @click.stop='onClear()'>
+        <svg-icon icon='close' :className="'svg-icon-close'" v-if='searchText'></svg-icon>
       </span>
     </div>
-    <div class="clearText" v-show="searchText" @click.stop="onSearch()">确定</div>
-    <slot name="h-right"></slot>
+    <div class='clearText' v-show='searchText' @click.stop='onSearch()'>确定</div>
+    <slot name='h-right'></slot>
   </div>
 </template>
 
@@ -45,6 +45,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang='scss'>
 @import './search.scss';
 </style>

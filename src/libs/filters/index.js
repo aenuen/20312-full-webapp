@@ -14,7 +14,7 @@ const dateDist = (date) => {
   }
 }
 
-const hours = (date) => {
+const hourDist = (date) => {
   if (dayjs(date).isBefore(dayjs(dayjs().format('YYYY-MM-DD 00:00:00')))) { // 超过1天，显示日期
     return dayjs(date).format('YYYY-MM-DD')
   } else {
@@ -24,5 +24,5 @@ const hours = (date) => {
 
 export default {
   dateDist,
-  hours
+  hourDist
 }

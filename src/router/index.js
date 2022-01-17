@@ -27,8 +27,6 @@ const Settings = () =>
   import(/* webpackChunkName: 'settings' */ '@/views/user/settings')
 // 浏览历史
 const MyHistory = () => import(/* webpackChunkName: 'myhisory' */ '@/views/user/myhistory')
-// 我的签到
-const Sign = () => import(/* webpackChunkName: 'sign' */ '@/views/user/sign')
 // 我的主页
 const Center = () =>
   import(/* webpackChunkName: 'center' */ '@/views/user/center')
@@ -139,7 +137,7 @@ const routes = [
   {
     path: '/sign',
     name: 'sign',
-    component: Sign,
+    component: require(/* webpackChunkName: 'sign' */ '@/views/user/sign/index').default,
     meta: { requiresAuth: true }
   },
   // 个人主页

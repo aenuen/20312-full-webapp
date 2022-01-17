@@ -1,6 +1,6 @@
 import { SET_HIDE, SET_ISLOGIN, SET_MSG, SET_SID, SET_TOKEN, SET_USER } from '@/store/mutation-types'
 import { publicCaptcha } from '@/api/public'
-import { loginSignIn } from '@/api/login'
+import loginDispatch from '@/api/login'
 import { v4 as uuid } from 'uuid'
 import { updateUserInfo, userSign } from '@/api/user'
 
@@ -59,7 +59,7 @@ export default {
       return publicCaptcha(sid)
     },
     async login ({ commit, state }, payload) { // 登录
-      const result = await loginSignIn({
+      const result = await loginDispatch.use('signIn', {
         ...payload,
         sid: state.sid
       })
@@ -73,7 +73,7 @@ export default {
       return result
     },
     // 签到
-    async signX ({ commit, state }) {
+    async sign ({ commit, state }) {
       const { userInfo } = state
       const result = await userSign()
       const { integral, count, lastSign } = result

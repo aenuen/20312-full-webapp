@@ -1,15 +1,15 @@
 // noinspection JSUnresolvedVariable,JSUnusedGlobalSymbols
 
-import { escape } from 'plugins-methods'
 import store from '@/store'
+import { escapeHtml } from 'plugins-methods'
 
 export default {
   richText: {
     bind: function (el, binding, vNode) {
-      el.innerHTML = escape(binding.value)
+      el.innerHTML = escapeHtml(binding.value)
     },
     componentUpdated: function (el, binding, vNode) {
-      el.innerHTML = escape(binding.value)
+      el.innerHTML = escapeHtml(binding.value)
     }
   },
   hasRole: {

@@ -1,14 +1,14 @@
 <template>
   <div>
-    <ul class="tab" ref="tabs">
+    <ul class='tab' ref='tabs'>
       <router-link
-        class="item"
-        :to="item.path"
+        class='item'
+        :to='item.path'
         :key="'home-tabs-' + index"
-        v-for="(item,index) in tabs"
-        exact-active-class="active"
+        v-for='(item,index) in tabs'
+        exact-active-class='active'
       >
-        <span class="txt">{{item.name}}</span>
+        <span class='txt'>{{ item.name }}</span>
       </router-link>
     </ul>
   </div>
@@ -35,6 +35,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 @import './tabs.scss';
 </style>

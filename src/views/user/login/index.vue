@@ -22,7 +22,7 @@
             <svg-icon icon='images' />
             <input type='text' placeholder='请输入验证码' v-model='authCode' />
           </div>
-          <div v-html='svg' class='code' @click='_getCode()'></div>
+          <div v-html='svg' class='code' @click='_getCode()' />
         </div>
         <div class='form-controls'>
           <router-link :to="{name: 'reg'}">注册</router-link>

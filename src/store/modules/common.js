@@ -1,4 +1,4 @@
-import WebSocketClient from '@/utils/websocket'
+import WebSocketClient from '@/libs/websocket'
 import { INIT_WEBSOCKET } from '@/store/mutation-types'
 
 export default {

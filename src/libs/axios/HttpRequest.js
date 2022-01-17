@@ -33,11 +33,11 @@ class HttpRequest {
   interceptors (instance) {
     // 请求拦截器
     instance.interceptors.request.use(config => {
-      const token = store.state.user.token
       let needToken = false
       publicPath.map((path) => {
         needToken = needToken || path.test(config.url)
       })
+      const token = store.state.user.token
       if (!needToken && token) {
         config.headers.Authorization = `Bearer ${token}`
       }

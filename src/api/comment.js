@@ -1,4 +1,4 @@
-import axios from '@/utils/axios'
+import axios from '@/libs/axios'
 
 // 评论创建
 export const commentCreate = (data) => axios.post('/comment/create', data)

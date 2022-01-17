@@ -27,7 +27,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { loginFindPassword } from '@/api/login'
+import loginDispatch from '@/api/login'
 
 export default {
   name: 'forget',
@@ -55,7 +55,7 @@ export default {
       }
     },
     async submit () {
-      const result = await loginFindPassword({
+      const result = await loginDispatch.use('findCode', {
         username: this.username,
         code: this.code,
         sid: this.$store.state.sid

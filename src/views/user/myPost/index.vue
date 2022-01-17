@@ -1,7 +1,7 @@
 <!--suppress HtmlUnknownAttribute -->
 <template>
   <div>
-    <my-header :zIndex='10' title='我的帖子'></my-header>
+    <my-header :zIndex='10' title='我的帖子' />
     <div class='container'>
       <div class='content'>
         <ul
@@ -18,7 +18,7 @@
               <div class='bottom flex'>
                 <div>
                   <span class='reads'>{{ item.answer }}回复</span>
-                  <span class='time'>{{ item.created | fromNow }}</span>
+                  <span class='time'>{{ item.created | senvenDayShow }}</span>
                 </div>
                 <div @click='deletePost(item._id,index)'>
                   <svg-icon icon='delete' />
@@ -26,7 +26,7 @@
               </div>
             </div>
           </li>
-          <li v-if='isEnd' class='noMore'>没有更多了~~~</li>
+          <li v-if='isEnd' class='scrollNoMore'>没有更多了~~~</li>
         </ul>
       </div>
     </div>
@@ -37,11 +37,16 @@
 import { mapGetters } from 'vuex'
 import { MessageBox } from 'mint-ui'
 import { postDelete, postMyPost } from '@/api/post'
-import { fromNow } from '@/utils/mymoment'
-import Paging from '@/utils/paging'
+import { senvenDayShow } from '@/libs/dayjs'
+import Paging from '@/libs/paging'
 
 export default {
   name: 'MyPost',
+  filters: {
+    senvenDayShow (value) {
+      return senvenDayShow(value)
+    }
+  },
   data () {
     return {
       postList: [],
@@ -87,11 +92,6 @@ export default {
         })
       }).catch(() => {
       })
-    }
-  },
-  filters: {
-    fromNow (value) {
-      return fromNow(value)
     }
   }
 }

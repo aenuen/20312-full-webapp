@@ -117,10 +117,7 @@ export default {
     }
   },
   mounted () {
-    this.wrapperHeight =
-      document.documentElement.clientHeight -
-      this.$refs.wrapper.getBoundingClientRect().top -
-      this.distance
+    this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top - this.distance
   }
 }
 </script>

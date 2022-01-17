@@ -2,13 +2,13 @@
   <div id='app'>
     <transition :name='direction'>
       <keep-alive>
-        <router-view></router-view>
+        <router-view />
       </keep-alive>
     </transition>
   </div>
 </template>
 <script>
-import { forbidScroll } from '@/utils/forbidScroll'
+import { forbidScroll } from '@/libs/forbidScroll'
 
 export default {
   name: 'app',

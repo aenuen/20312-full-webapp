@@ -1,3 +1,5 @@
+// noinspection JSUnresolvedFunction
+
 import Vue from 'vue'
 
 const componentsContext = require.context('@/components', true, /.vue$/)

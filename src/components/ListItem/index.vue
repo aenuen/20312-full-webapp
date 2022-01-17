@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { catalogs } from '@/config'
+import { catalogObject } from 'plugins-methods'
 
 export default {
   name: 'list-item',
@@ -43,7 +43,7 @@ export default {
   },
   filters: {
     catalogFilter (v) {
-      return catalogs[v]
+      return catalogObject[v].label
     }
   }
 }
