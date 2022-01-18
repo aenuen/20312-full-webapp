@@ -1,3 +1,4 @@
+<!--suppress JSAnnotator -->
 <template>
   <div>
     <div class='grey'>
@@ -5,8 +6,8 @@
       <div class='bg'>
         <div class='wrapper'>
           <span class='fav'>
-            <svg-icon icon='fav2'></svg-icon>
-            <i></i>
+            <svg-icon icon='fav2' />
+            <i />
           </span>
           <span>可用积分：{{ userInfo.integral }}</span>
         </div>
@@ -19,7 +20,7 @@
           </div>
           <ul class='sign-bar'>
             <li class='item' v-for='(item,index) in weeks' :key="'weeks' + index">
-              <i>{{ checked.includes(index) ? '' : preFavs[index] }}</i>
+              <i>{{ checked.includes(index) ? '' : preIntegral[index] }}</i>
               <svg-icon icon='check' class='active' v-show='checked.includes(index)'></svg-icon>
               <span>{{ item }}</span>
               <div
@@ -79,7 +80,7 @@
       </div>
       <div class='sign-modal' v-show='isShow'>
         <div class='title'>恭喜您，签到成功!</div>
-        <div class='desc'>恭喜您已获得{{ expectedFavs }}积分</div>
+        <div class='desc'>恭喜您已获得{{ expectedIntegral }}积分</div>
         <mt-button type='primary' class='btn' @click='close()'>好的</mt-button>
       </div>
     </div>
@@ -87,17 +88,19 @@
 </template>
 
 <script>
+import MyHeader from '@/components/Header'
 import { mapActions } from 'vuex'
 import { diffNumberDays, getDateDay } from '@/libs/dayjs'
 import { integralCount, pmWeek } from 'plugins-methods'
 
 export default {
   name: 'Sign',
+  components: { MyHeader },
   data () {
     return {
       weeks: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
       checked: [],
-      preFavs: [],
+      preIntegral: [],
       isShow: false,
       count: 0
     }
@@ -112,16 +115,17 @@ export default {
     ...mapActions({
       sign: 'user/sign'
     }),
-    sign () {
+    async sign () {
       if (this.isSign) {
         this.$Toast('您已签到！')
       } else {
         this.$Loading.show()
-        this.sign().then(() => {
+        const result = await this.sign()
+        if (result.code === 200) {
           this.isShow = true
           this.renderList()
-          this.$Loading.close()
-        })
+        }
+        this.$Loading.close()
       }
     },
     close () {
@@ -140,17 +144,17 @@ export default {
         count--
       }
       for (let i = 1; i <= count; i++) { // 渲染之前的签到节点
-        const yestoday = today - i
-        if (yestoday < 0) {
+        const yesterday = today - i
+        if (yesterday < 0) {
           break
         }
-        this.checked.push(yestoday)
+        this.checked.push(yesterday)
       }
       for (let i = 0; i < 7; i++) {
         if (i < today) {
-          this.preFavs.push('未签到')
+          this.preIntegral.push('未签到')
         } else {
-          this.preFavs.push('+' + integralCount(i + count))
+          this.preIntegral.push('+' + integralCount(i + count))
         }
       }
     }
@@ -162,7 +166,7 @@ export default {
     isSign () {
       return this.$store.state.user.userInfo.isSign
     },
-    expectedFavs () { // 预期的签到积分
+    expectedIntegral () { // 预期的签到积分
       return integralCount(this.userInfo.count + 1)
     }
   }

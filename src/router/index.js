@@ -5,179 +5,24 @@ import moment from 'dayjs'
 import { INIT_WEBSOCKET, SET_ISLOGIN, SET_TOKEN, SET_USER } from '@/store/mutation-types'
 import { MessageBox } from 'mint-ui'
 
-const Home = () => import(/* webpackChunkName: 'home' */ '@/views/home')
-const Catalog = () =>
-  import(/* webpackChunkName: 'catalog' */ '@/views/home/catalog.vue')
-
-const Detail = () => import(/* webpackChunkName: 'detail' */ '@/views/detail')
-
-// 注册登录&找回密码
-const Login = () => import(/* webpackChunkName: 'login' */ '@/views/user/login')
-const Reg = () => import(/* webpackChunkName: 'reg' */ '@/views/user/reg')
-const Forget = () =>
-  import(/* webpackChunkName: 'forget' */ '@/views/user/forget')
-
-const Hot = () => import(/* webpackChunkName: 'hot' */ '@/views/hot')
-const Msg = () => import(/* webpackChunkName: 'msg' */ '@/views/msg')
-// 修改密码
-const Passwd = () =>
-  import(/* webpackChunkName: 'passwd' */ '@/views/user/passwd')
-// 修改个人设置
-const Settings = () =>
-  import(/* webpackChunkName: 'settings' */ '@/views/user/settings')
-// 浏览历史
-const MyHistory = () => import(/* webpackChunkName: 'myhisory' */ '@/views/user/myhistory')
-// 我的主页
-const Center = () =>
-  import(/* webpackChunkName: 'center' */ '@/views/user/center')
-// 热门相关
-const HotPost = () =>
-  import(/* webpackChunkName: 'hotpost' */ '@/views/hot/post')
-const HotComments = () =>
-  import(/* webpackChunkName: 'hotcomments' */ '@/views/hot/comments')
-const HotSign = () =>
-  import(/* webpackChunkName: 'hotsign' */ '@/views/hot/sign')
+import detailRouter from './modules/detail'
+import homeRouter from './modules/home'
+import hotRouter from './modules/hot'
+import loginRouter from './modules/login'
+import msgRouter from './modules/msg'
+import newPostRouter from './modules/newPost'
+import UserRouter from './modules/user'
 
 Vue.use(VueRouter)
 
 const routes = [
-  // 首页
-  {
-    path: '',
-    component: Home,
-    name: 'home',
-    // 修复默认路由
-    redirect: '/index',
-    children: [
-      {
-        path: '/index',
-        name: 'index',
-        component: Catalog
-      },
-      {
-        path: '/index/:catalog',
-        name: 'catalog',
-        component: Catalog,
-        props: true
-      }
-    ]
-  },
-  // 详情页
-  {
-    path: '/detail/:pid',
-    name: 'detail',
-    props: true,
-    component: Detail
-  },
-  // 注册登录
-  {
-    path: '/login',
-    name: 'login',
-    component: Login
-  },
-  {
-    path: '/reg',
-    name: 'reg',
-    component: Reg
-  },
-  {
-    path: '/forget',
-    name: 'forget',
-    component: Forget
-    // meta: { requiresAuth: true }
-  },
-  {
-    path: '/user',
-    name: 'user',
-    component: require(/* webpackChunkName: 'user' */ '@/views/user/user/index').default
-  },
-  // 修改设置
-  {
-    path: '/passwd',
-    name: 'passwd',
-    component: Passwd,
-    meta: { requiresAuth: true }
-  },
-  // 修改设置
-  {
-    path: '/settings',
-    name: 'settings',
-    component: Settings,
-    meta: { requiresAuth: true }
-  },
-  // 我的帖子
-  {
-    path: '/myPost',
-    name: 'myPost',
-    component: require(/* webpackChunkName: 'myPost' */ '@/views/user/myPost/index').default,
-    meta: { requiresAuth: true }
-  },
-  // 新增帖子
-  {
-    path: '/newPost',
-    name: 'newPost',
-    component: require(/* webpackChunkName: 'newPost' */ '@/views/newPost').default,
-    meta: { requiresAuth: true }
-  },
-  // 我的收藏
-  {
-    path: '/myCollect',
-    name: 'myCollect',
-    component: require(/* webpackChunkName: 'myCollect' */ '@/views/user/myCollect').default,
-    meta: { requiresAuth: true }
-  },
-  // 我的历史
-  {
-    path: '/myhistory',
-    name: 'myhistory',
-    component: MyHistory,
-    meta: { requiresAuth: true }
-  },
-  // 签到中心
-  {
-    path: '/sign',
-    name: 'sign',
-    component: require(/* webpackChunkName: 'sign' */ '@/views/user/sign/index').default,
-    meta: { requiresAuth: true }
-  },
-  // 个人主页
-  {
-    path: '/center',
-    name: 'center',
-    component: Center,
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/hot',
-    name: 'hot',
-    component: Hot,
-    props: true,
-    redirect: '/hot/hotPost', // 修复默认路由
-    children: [
-      {
-        path: 'hotPost',
-        name: 'hotPost',
-        component: HotPost
-      },
-      {
-        path: 'hotComment',
-        name: 'hotComment',
-        component: HotComments
-      },
-      {
-        path: 'hotSign',
-        name: 'hotSign',
-        component: HotSign
-      }
-    ]
-  },
-  {
-    path: '/msg/:type',
-    name: 'msg',
-    component: Msg,
-    props: true,
-    meta: { requiresAuth: true }
-  }
+  ...detailRouter,
+  ...homeRouter,
+  ...hotRouter,
+  ...loginRouter,
+  ...msgRouter,
+  ...newPostRouter,
+  ...UserRouter
 ]
 
 const router = new VueRouter({
@@ -218,14 +63,10 @@ router.beforeEach((to, from, next) => {
       // 权限判断，meta元数据
       next()
     } else {
-      // 未登录的状态
-      // next('/login')
-      MessageBox.confirm('您还未登录，需要登录吗？')
-        .then((action) => {
-          next('/login')
-        })
-        .catch((cancel) => {
-        })
+      MessageBox.confirm('您还未登录，需要登录吗？').then((action) => {
+        next('/signIn')
+      }).catch((cancel) => {
+      })
     }
   } else {
     // 公共页面，不需要用户登录

@@ -44,9 +44,10 @@
 import MyHeader from '@/components/Header'
 import DataSlots01 from './modules/data_slots01'
 import DataSlots02 from './modules/data_slots02'
+import { integralArray } from 'plugins-methods'
 import { contentUpload } from '@/api/content'
 import { userCount } from '@/api/user'
-import { postMCreate } from '@/api/post'
+import { postDispatch } from '@/api/post'
 
 export default {
   name: 'newPost',
@@ -76,7 +77,8 @@ export default {
         if (countIntegral < 20) {
           this.$Toast('您的积分少于 20 ，无法发帖！')
         } else {
-          const tempIntegral = [20, 50, 80, 200, 500]
+          const tempIntegral = integralArray
+          tempIntegral.push(200, 500)
           tempIntegral.forEach(item => {
             if (item <= countIntegral) {
               this.slots02[0].values.push({ key: `${item}`, value: `${item}积分` })
@@ -127,7 +129,7 @@ export default {
     submit () {
       if (this.isValidate) {
         this.$Loading.show()
-        postMCreate({
+        postDispatch.use('mCreate', {
           title: this.title,
           catalog: 'ask',
           integral: '20',

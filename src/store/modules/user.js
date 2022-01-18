@@ -1,3 +1,5 @@
+// noinspection SpellCheckingInspection
+
 import { SET_HIDE, SET_ISLOGIN, SET_MSG, SET_SID, SET_TOKEN, SET_USER } from '@/store/mutation-types'
 import { publicCaptcha } from '@/api/public'
 import loginDispatch from '@/api/login'

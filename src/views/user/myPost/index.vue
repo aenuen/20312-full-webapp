@@ -1,4 +1,4 @@
-<!--suppress HtmlUnknownAttribute -->
+<!--suppress HtmlUnknownAttribute, JSAnnotator -->
 <template>
   <div>
     <my-header :zIndex='10' title='我的帖子' />
@@ -36,7 +36,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { MessageBox } from 'mint-ui'
-import { postDelete, postMyPost } from '@/api/post'
+import { postDispatch, postMyPost } from '@/api/post'
 import { senvenDayShow } from '@/libs/dayjs'
 import Paging from '@/libs/paging'
 
@@ -83,7 +83,7 @@ export default {
     },
     deletePost (pid, index) {
       MessageBox.confirm('确定删除该帖子吗?').then(action => {
-        postDelete({ pid }).then(({ code, msg }) => {
+        postDispatch.use('delete', { pid }).then(({ code, msg }) => {
           if (code === 200) {
             this.postList.splice(index, 1)
           } else {

@@ -1,19 +1,21 @@
 <template>
   <div class='search-wrap' ref='search'>
-    <slot name='h-left'></slot>
+    <slot name='h-left' />
     <div class='search-block' :class="{'searching': searchText}">
-      <i class='mintui mintui-search'></i>
+      <i class='mintui mintui-search' />
       <input type='text' class='in' v-model='searchText' :placeholder='placeHolderIn' />
       <span @click.stop='onClear()'>
-        <svg-icon icon='close' :className="'svg-icon-close'" v-if='searchText'></svg-icon>
+        <svg-icon icon='close' :className="'svg-icon-close'" v-if='searchText' />
       </span>
     </div>
     <div class='clearText' v-show='searchText' @click.stop='onSearch()'>确定</div>
-    <slot name='h-right'></slot>
+    <slot name='h-right' />
   </div>
 </template>
 
 <script>
+import { forbidScroll } from '@/libs/forbidScroll'
+
 export default {
   name: 'search',
   props: {
@@ -28,6 +30,7 @@ export default {
     }
   },
   mounted () {
+    window.forbidScroll = forbidScroll
     const elem = this.$refs.search
     window.forbidScroll(elem)
   },
@@ -46,5 +49,5 @@ export default {
 </script>
 
 <style lang='scss'>
-@import './search.scss';
+@import 'style';
 </style>

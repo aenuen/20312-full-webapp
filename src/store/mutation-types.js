@@ -1,3 +1,5 @@
+// noinspection SpellCheckingInspection
+
 export const INIT_WEBSOCKET = 'INIT_WEBSOCKET'
 export const SET_SID = 'SET_SID'
 export const SET_USER = 'SET_USER'

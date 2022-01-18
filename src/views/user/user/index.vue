@@ -1,3 +1,4 @@
+<!--suppress JSAnnotator -->
 <template>
   <div>
     <div class='grey'>
@@ -9,7 +10,7 @@
             <div class='user'>
               <p class='name'>{{ isLogin ? user.nickname : '请登录' }}</p>
               <p class='fav'>
-                <svg-icon icon='fav2' class='icon-fav'></svg-icon>
+                <svg-icon icon='fav2' class='icon-fav' />
                 积分：{{ user.integer }}
               </p>
             </div>
@@ -37,7 +38,7 @@
           </ul>
         </div>
       </div>
-      <div class='center-wraper'>
+      <div class='center-wrapper'>
         <ul class='center-list first'>
           <li v-for='(item,index) in lists' :key="'center-' + index" @click='goTo(item.routeName)'>
             <i :class='item.icon' />

@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import { forbidScroll } from '@/libs/forbidScroll'
+
 export default {
   name: 'tabs',
   data () {
@@ -29,6 +31,7 @@ export default {
     }
   },
   mounted () {
+    window.forbidScroll = forbidScroll
     const elem = this.$refs.tabs
     window.forbidScroll(elem)
   }

@@ -1,6 +1,7 @@
+<!--suppress JSAnnotator -->
 <template>
   <div class='wrapper'>
-    <my-header title='登录'></my-header>
+    <my-header title='登录' />
     <div class='logo'>
       <img src='@/assets/images/logo.jpg' alt />
     </div>
@@ -25,7 +26,7 @@
           <div v-html='svg' class='code' @click='_getCode()' />
         </div>
         <div class='form-controls'>
-          <router-link :to="{name: 'reg'}">注册</router-link>
+          <router-link :to="{name: 'signUp'}">注册</router-link>
           <router-link :to="{name: 'forget'}">忘记密码</router-link>
         </div>
         <div>
@@ -47,7 +48,7 @@ import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'login',
+  name: 'SignIn',
   components: {
     MyHeader,
     ValidationProvider,

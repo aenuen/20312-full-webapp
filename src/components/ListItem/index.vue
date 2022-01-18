@@ -1,4 +1,4 @@
-<!--suppress JSUnresolvedFunction, JSUnresolvedVariable -->
+<!--suppress JSUnresolvedFunction, JSUnresolvedVariable, HtmlUnknownAttribute -->
 <template>
   <li class='list-box' @click='showDetail(item._id)'>
     <div class='list-head'>

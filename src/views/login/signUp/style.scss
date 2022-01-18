@@ -1,0 +1,77 @@
+@import "../../../assets/styles/_variables";
+
+.wrapper {
+  padding: $header-height 30px 0 30px;
+
+  .logo {
+    padding-top: 10px;
+    text-align: center;
+
+    img {
+      width: 40%;
+    }
+  }
+
+  .button {
+    button {
+      margin-bottom: 40px;
+    }
+  }
+}
+
+.form {
+  padding-top: 30px;
+
+  .input-wrap {
+    line-height: 80px;
+    border-bottom: 1px solid $border-color;
+    margin-bottom: 20px;
+
+    input {
+      width: 80%;
+      outline: none;
+      border: none;
+      -webkit-appearance: none;
+    }
+
+    .svg-icon {
+      font-size: 36px;
+      vertical-align: middle;
+      padding: 0 20px;
+      color: #666;
+    }
+
+    &.flex {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+
+      .code-input {
+        flex: 1;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+
+        input {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.form-controls {
+  margin: 40px 0 60px 0;
+  font-size: 28px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+
+  a {
+    text-decoration: none;
+    color: #999;
+  }
+}

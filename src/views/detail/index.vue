@@ -1,4 +1,4 @@
-<!--suppress HtmlUnknownAttribute, JSUnresolvedFunction -->
+<!--suppress HtmlUnknownAttribute, JSUnresolvedFunction, JSAnnotator -->
 <template>
   <div>
     <my-header :title="detail.title || '页面详情'" :hasBack='true' :zIndex='1000' />
@@ -101,7 +101,7 @@ import MyHeader from '@/components/Header'
 import BScroll from 'better-scroll'
 import { publicCommentList, publicPostDetail } from '@/api/public'
 import { collectDispatch } from '@/api/collect'
-import { commentMCreate, commentSetLike } from '@/api/comment'
+import { commentDispatch } from '@/api/comment'
 import Paging from '@/libs/paging'
 import { mapGetters } from 'vuex'
 import { faces } from 'plugins-methods'
@@ -173,8 +173,8 @@ export default {
         this.scroll = new BScroll(this.$refs.faces)
       }
     },
-    setLike (item) {
-      commentSetLike({ cid: item._id }).then(({ code, msg, data }) => {
+    setLike (item) { // 点赞&&取消点赞
+      commentDispatch.use('setLike', { cid: item._id }).then(({ code, msg, data }) => {
         if (code === 200) {
           item.like += data
           this.$Toast(msg)
@@ -195,7 +195,7 @@ export default {
       this.loading = true
       this.getCommentsList()
     },
-    getPostDetail () {
+    getPostDetail () { // 帖子详情
       publicPostDetail({ pid: this.pid }).then(({ code, data }) => {
         if (code === 200) {
           this.detail = data
@@ -207,7 +207,7 @@ export default {
         this.loading = false
       })
     },
-    collect (pid) {
+    collect (pid) { // 收藏&&取消收藏
       if (this.isLogin) {
         this.$Loading.show()
         collectDispatch.use('toggle', {
@@ -225,32 +225,30 @@ export default {
         this.$Toast('还未登录无法收藏！')
       }
     },
-    submitComment () {
+    submitComment () { // 发表评论
       if (!this.isLogin) {
         this.$Toast('请登录后再发表评论！')
-        return
-      }
-      if (this.commentContent === '') {
+      } else if (this.commentContent === '') {
         this.$Toast('评论内容不能为空！')
-        return
+      } else {
+        this.$Loading.show()
+        commentDispatch.use('mCreate', {
+          pid: this.detail._id,
+          uid: this.detail.uid._id,
+          hUid: this.user._id,
+          content: this.commentContent
+        }).then(({ code, msg }) => {
+          this.$Loading.close()
+          if (code === 200) {
+            this.loading = true
+            this.paging.clear()
+            this.detail.answer = +this.detail.answer + 1
+            this.commentContent = ''
+            this.getCommentsList()
+          }
+          this.$Toast(msg)
+        })
       }
-      this.$Loading.show()
-      commentMCreate({
-        pid: this.detail._id,
-        uid: this.detail.uid._id,
-        hUid: this.user._id,
-        content: this.commentContent
-      }).then(({ code, msg }) => {
-        this.$Loading.close()
-        if (code === 200) {
-          this.loading = true
-          this.paging.clear()
-          this.detail.answer = +this.detail.answer + 1
-          this.commentContent = ''
-          this.getCommentsList()
-        }
-        this.$Toast(msg)
-      })
     }
   }
 }
