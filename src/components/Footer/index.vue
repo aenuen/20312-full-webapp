@@ -8,7 +8,7 @@
         class='item'
         active-class='active'
       >
-        <svg-icon :icon='tab.icon' :class="['svg-icon-'+ tab.icon]"></svg-icon>
+        <svg-icon :icon='tab.icon' :class="['svg-icon-'+ tab.icon]" />
         <p>{{ tab.name }}</p>
       </router-link>
     </ul>
@@ -39,5 +39,5 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-@import './footer.scss';
+@import './style';
 </style>

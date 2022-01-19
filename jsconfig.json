@@ -6,12 +6,6 @@
     "paths": {
       "@/*": [
         "src/*"
-      ],
-      "_c/*": [
-        "src/components/*"
-      ],
-      "~*": [
-        "node_modules/*"
       ]
     }
   },

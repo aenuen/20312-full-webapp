@@ -6,5 +6,6 @@ import Dispatch from '@/libs/axios/dispatch'
 export const collectList = (params) => axios.get(`/collect/list?${qs.stringify(params)}`)
 
 export const collectDispatch = new Dispatch({
-  toggle: ['/collect/toggle', 'post'] // 收藏&&取消收藏
+  toggle: ['/collect/toggle', 'post'], // 收藏&&取消收藏
+  delete: ['/collect/delete', 'post'] // 删除收藏
 })

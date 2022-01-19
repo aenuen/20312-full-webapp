@@ -30,7 +30,7 @@
               </router-link>
             </li>
             <li class='item'>
-              <router-link :to="{name: 'myhistory'}">
+              <router-link :to="{name: 'myHistory'}">
                 <p>{{ countMyHistory }}</p>
                 <p class='title'>最近浏览</p>
               </router-link>
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import MyFooter from '@/components/Layout/footer'
+import MyFooter from '@/components/Footer'
 import { mapGetters } from 'vuex'
 import { userCount } from '@/api/user'
 

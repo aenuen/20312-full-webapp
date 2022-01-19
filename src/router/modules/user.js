@@ -14,7 +14,7 @@ export default [
     path: '/settings',
     name: 'settings',
     meta: { requiresAuth: true },
-    component: require(/* webpackChunkName: 'settings' */ '@/views/user/settings').default
+    component: require(/* webpackChunkName: 'settings' */ '@/views/user/settings/index').default
   },
   { // 个人主页
     path: '/center',
@@ -32,7 +32,7 @@ export default [
     path: '/myCollect',
     name: 'myCollect',
     meta: { requiresAuth: true },
-    component: require(/* webpackChunkName: 'myCollect' */ '@/views/user/myCollect').default
+    component: require(/* webpackChunkName: 'myCollect' */ '@/views/user/myCollect/index').default
   },
   { // 我的帖子
     path: '/myPost',
@@ -44,6 +44,6 @@ export default [
     path: '/myHistory',
     name: 'myHistory',
     meta: { requiresAuth: true },
-    component: require(/* webpackChunkName: 'myHistory' */ '@/views/user/myhistory').default
+    component: require(/* webpackChunkName: 'myHistory' */ '@/views/user/myHistory').default
   }
 ]

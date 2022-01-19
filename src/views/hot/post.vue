@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="wrapper">
-      <ul class="ctrls">
+      <ul class="lis">
         <li :class="{'active': current === 0 }" @click="setIndex(0)">3日内</li>
         <li :class="{'active': current === 1 }" @click="setIndex(1)">7日内</li>
         <li :class="{'active': current === 2 }" @click="setIndex(2)">30日内</li>
@@ -20,14 +20,15 @@
             <div class="num first" v-if="index === 0">01</div>
             <div class="num second" v-else-if="index === 1">02</div>
             <div class="num third" v-else-if="index === 2">03</div>
-            <div class="num common" v-else-if="index < 9">{{ '0' + (index+1) }}</div>
-            <div class="num common" v-else-if="index < 50 && index >=9">{{ index+1 }}</div>
+            <div class="num common" v-else-if="index < 9">{{ '0' + (index + 1) }}</div>
+            <div class="num common" v-else-if="index < 50 && index >=9">{{ index + 1 }}</div>
             <div class="num" v-else></div>
             <div class="column">
-              <div class="title">{{item.title}}</div>
+              <div class="title">{{ item.title }}</div>
               <div
                 class="read"
-              >{{parseInt(item.answer) > 1000?parseInt(item.answer/1000).toFixed(1) + 'k': item.answer}} 评论</div>
+              >{{ parseInt(item.answer) > 1000 ? parseInt(item.answer / 1000).toFixed(1) + 'k' : item.answer }} 评论
+              </div>
             </div>
             <div class="img" v-if="item.shotpic">
               <img :src="item.shotpic" />
@@ -42,6 +43,7 @@
 
 <script>
 import { getHotPost } from '@/api/hot'
+
 export default {
   name: 'post',
   data () {
@@ -138,11 +140,13 @@ export default {
 <style lang="scss" scoped>
 .wrapper {
   padding: 0 20px;
-  .ctrls {
+
+  .lis {
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;
     align-items: center;
+
     li {
       background: rgba(243, 243, 243, 1);
       color: #999;
@@ -154,6 +158,7 @@ export default {
       border-radius: 20px;
       margin-right: 25px;
       margin-top: 15px;
+
       &.active {
         color: rgba(2, 209, 153, 1);
         background: rgba(2, 209, 153, 0.16);
@@ -161,36 +166,45 @@ export default {
     }
   }
 }
+
 .content-box {
   padding: 0 30px 60px 30px;
+
   .content-item {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;
   }
+
   .num {
     font-size: 36px;
     font-weight: bold;
+
     &.first {
       color: #ed745e;
     }
+
     &.second {
       color: #e08435;
     }
+
     &.third {
       color: #f1ae37;
     }
+
     &.common {
       color: #999;
     }
   }
+
   .user {
     width: 90px;
     height: 90px;
     border-radius: 50%;
     padding-left: 20px;
   }
+
   .column {
     flex: 1;
     display: flex;
@@ -198,31 +212,38 @@ export default {
     justify-content: space-between;
     height: 130px;
     padding: 35px 20px;
+
     &.no-between {
       justify-content: center;
+
       .title {
         padding-bottom: 16px;
       }
     }
+
     .title {
       color: #333;
       font-size: 32px;
       font-weight: bold;
     }
+
     .read {
       font-size: 26px;
       color: #999;
+
       span {
         color: $font-main-color;
         font-weight: bold;
       }
     }
   }
+
   .img {
     width: 200px;
     height: 125px;
     border-radius: 12px;
     overflow: hidden;
+
     img {
       width: 100%;
       height: 100%;

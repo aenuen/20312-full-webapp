@@ -11,9 +11,9 @@ import '@/libs/veevalidate'
 // 样式
 import 'normalize.css/normalize.css'
 import '@/assets/styles/theme.scss'
-import 'plugins-methods/css/supplement.scss'
-import 'plugins-methods/css/flex.css'
-import 'plugins-methods/css/mobile.css'
+import '@/assets/styles/supplement.scss'
+import '@/assets/styles/flex.css'
+import '@/assets/styles/mobile.css'
 
 // 引用mint-ui组件
 import '@/libs/mint-ui'

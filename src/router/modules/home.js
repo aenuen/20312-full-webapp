@@ -2,7 +2,7 @@ export default [
   {
     path: '',
     name: 'home',
-    redirect: '/home', // 修复默认路由
+    redirect: '/index', // 修复默认路由
     component: require(/* webpackChunkName: 'home' */ '@/views/home').default,
     children: [
       {

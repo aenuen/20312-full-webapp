@@ -16,7 +16,7 @@
     "dayjs": "^1.10.7",
     "mint-ui": "^2.2.13",
     "normalize.css": "^8.0.1",
-    "plugins-methods": "1.0.87",
+    "plugins-methods": "1.0.89",
     "qs": "^6.10.3",
     "uuid": "^8.3.2",
     "vee-validate": "^3.4.14",

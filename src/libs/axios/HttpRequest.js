@@ -1,7 +1,6 @@
-import { publicPath } from 'plugins-methods'
 import axios from 'axios'
 import errorHandle from './errorHandle'
-import store from '@/store'
+import needToken from './needToken'
 
 const CancelToken = axios.CancelToken
 
@@ -33,13 +32,9 @@ class HttpRequest {
   interceptors (instance) {
     // 请求拦截器
     instance.interceptors.request.use(config => {
-      let needToken = false
-      publicPath.map((path) => {
-        needToken = needToken || path.test(config.url)
-      })
-      const token = store.state.user.token
-      if (!needToken && token) {
-        config.headers.Authorization = `Bearer ${token}`
+      const token = needToken(config.url)
+      if (token) {
+        config.headers.Authorization = token
       }
       const key = `${config.url}&${config.method}`
       this.removePending(key, true)

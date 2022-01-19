@@ -29,7 +29,7 @@
               ></div>
             </li>
           </ul>
-          <mt-button type='primary' size='large' class='btn' :class="{'signed': isSign}" @click='sign()'>
+          <mt-button type='primary' size='large' class='btn' :class="{'signed': isSign}" @click='userSign()'>
             {{ !isSign ? '签到' : '已签到' }}
           </mt-button>
         </div>
@@ -105,6 +105,17 @@ export default {
       count: 0
     }
   },
+  computed: {
+    userInfo () {
+      return this.$store.state.user.userInfo
+    },
+    isSign () {
+      return this.$store.state.user.userInfo.isSign
+    },
+    expectedIntegral () { // 预期的签到积分
+      return integralCount(this.userInfo.count + 1)
+    }
+  },
   mounted () {
     this.renderList()
   },
@@ -115,7 +126,7 @@ export default {
     ...mapActions({
       sign: 'user/sign'
     }),
-    async sign () {
+    async userSign () {
       if (this.isSign) {
         this.$Toast('您已签到！')
       } else {
@@ -157,17 +168,6 @@ export default {
           this.preIntegral.push('+' + integralCount(i + count))
         }
       }
-    }
-  },
-  computed: {
-    userInfo () {
-      return this.$store.state.user.userInfo
-    },
-    isSign () {
-      return this.$store.state.user.userInfo.isSign
-    },
-    expectedIntegral () { // 预期的签到积分
-      return integralCount(this.userInfo.count + 1)
     }
   }
 }

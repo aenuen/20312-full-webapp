@@ -13,7 +13,6 @@ module.exports = {
     const svgRule = config.module.rule('svg')
     const terser = config.optimization.minimizer('terser')
     svgRule.uses.clear()
-    // GraphQL Loader
     svgRule
       .test(/\.svg$/)
       .include.add(resolve('./src/assets/icons'))

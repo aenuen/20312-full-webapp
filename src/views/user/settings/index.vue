@@ -1,17 +1,18 @@
 <template>
   <div>
-    <my-header title="修改设置"></my-header>
+    <my-header title="修改设置" />
     <div class="container">
       <div class="wrapper">
         <div class="img">
           <label for="img">
-            <img :src="form.pic" alt />
-            <i></i>
+            <img :src="form.avatar" alt />
+            <i />
           </label>
           <input type="file" class="none" id="img" accept=".gif, .jpg, .png" @change="getFile" />
           <svg-icon icon="camera" class="upload"></svg-icon>
         </div>
       </div>
+      <log>{{ form.avatar }}</log>
       <mt-field label="账号" placeholder="请输入邮箱" v-model="form.username"></mt-field>
       <mt-field label="昵称" placeholder="请输入昵称" v-model="form.name"></mt-field>
       <mt-field label="城市" placeholder="请输入城市" v-model="form.location"></mt-field>
@@ -28,9 +29,9 @@
         type="textarea"
         rows="3"
         v-model="form.regmark"
-      ></mt-field>
+      />
       <mt-actionsheet :actions="genderAction" v-model="sheetVisible"></mt-actionsheet>
-      <div class="ctrls">
+      <div class="button">
         <mt-button type="primary" size="large" @click="submit()">确定</mt-button>
         <mt-button type="default" size="large" @click="$router.back()">取消</mt-button>
       </div>
@@ -40,7 +41,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { uploadImg } from '../../api/content'
+import { uploadImg } from '@/api/content'
 
 export default {
   name: 'settings',
@@ -121,15 +122,18 @@ export default {
   // padding-top: $header-height + 10;
   padding: $header-height + 10 30px 30px;
 }
+
 .divider {
   height: 24px;
   background: #f6f6f6;
   width: 100vw;
   margin-left: -30px;
 }
+
 .wrapper {
   text-align: center;
 }
+
 .img {
   margin: 40px 0;
   text-align: center;
@@ -137,6 +141,7 @@ export default {
   display: inline-block;
   border-radius: 50%;
   overflow: hidden;
+
   img {
     border-radius: 50%;
     width: 180px;
@@ -144,6 +149,7 @@ export default {
     position: relative;
     overflow: hidden;
   }
+
   i {
     display: inline-block;
     width: 200px;
@@ -155,9 +161,11 @@ export default {
     left: 50%;
     margin-left: -100px;
   }
+
   .none {
     display: none;
   }
+
   .upload {
     position: absolute;
     bottom: 10px;
@@ -168,9 +176,11 @@ export default {
     z-index: 100;
   }
 }
-.ctrls {
+
+.button {
   padding: 0 30px;
   margin-top: 60px;
+
   button {
     margin-bottom: 30px;
   }

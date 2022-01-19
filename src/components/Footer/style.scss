@@ -1,4 +1,5 @@
-@import '@/assets/styles/_mixin.scss';
+@import '../../assets/styles/_mixin';
+@import '../../assets/styles/_variables';
 
 .layout-footer {
   position: fixed;
@@ -18,27 +19,34 @@
   @include resH-to(big-screens) {
     padding-bottom: 28px;
   }
+
   &.fixed {
     padding-bottom: 28px;
   }
+
   a {
     text-decoration: none;
   }
+
   p {
     font-size: 24px;
     margin: 0;
   }
+
   .item {
     flex: 1;
     color: #ccc;
   }
+
   .active {
     color: #02d199;
   }
+
   .svg-icon {
     font-size: 40px;
     margin-bottom: 6px;
   }
+
   .svg-icon-home {
     font-size: 46px;
   }

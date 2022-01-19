@@ -1,21 +1,24 @@
 <template>
   <div class="wrapper">
-    <slot></slot>
-    <my-footer></my-footer>
+    <slot />
+    <my-footer />
   </div>
 </template>
 
 <script>
-// import Footer from './footer'
+import MyFooter from '@/components/Footer'
+
 export default {
-  name: 'Layout'
-  // components: {
-  //   'my-footer': Footer
-  // }
+  name: 'Layout',
+  components: {
+    MyFooter
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+@import "../../assets/styles/_variables";
+
 .wrapper {
   padding-bottom: $footer-height;
 }
