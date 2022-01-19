@@ -1,48 +1,48 @@
 <template>
   <div>
-    <ul class="links">
+    <ul class='links'>
       <li>
-        <router-link to="/msg/reply">回复</router-link>
+        <router-link to='/msg/reply'>回复</router-link>
       </li>
       <li>
-        <router-link to="/msg/hands">点赞</router-link>
+        <router-link to='/msg/hands'>点赞</router-link>
       </li>
     </ul>
-    <ul class="content-box" v-if="localType==='reply'">
-      <li class="item" v-for="(item,index) in lists" :key="'msg-'+index">
-        <div class="content-item">
-          <div class="flex">
-            <img class="user" src="/img/bear-200-200.jpg" alt />
-            <div class="column">
-              <div class="title">{{ item.cuid ? item.cuid.name : '用户未设置昵称' }}</div>
-              <div class="read">{{ item.created |moment }}</div>
+    <ul class='content-box' v-if="localType==='reply'">
+      <li class='item' v-for='(item,index) in lists' :key="'msg-'+index">
+        <div class='content-item'>
+          <div class='flex'>
+            <img class='user' src='/images/header.jpg' alt />
+            <div class='column'>
+              <div class='title'>{{ item.cuid ? item.cuid.name : '用户未设置昵称' }}</div>
+              <div class='read'>{{ item.created |moment }}</div>
             </div>
           </div>
-          <div class="reply">
-            <svg-icon icon="editor"></svg-icon>
+          <div class='reply'>
+            <svg-icon icon='editor'></svg-icon>
             回复
           </div>
         </div>
-        <div class="reply-content">{{ item.content }}</div>
-        <div class="page" @click="goDetail(item)">
-          <div class="title">{{ item.tid ? item.tid.title : '' }}</div>
-          <div class="desc">{{ item.tid ? item.tid.content : '' }}</div>
+        <div class='reply-content'>{{ item.content }}</div>
+        <div class='page' @click='goDetail(item)'>
+          <div class='title'>{{ item.tid ? item.tid.title : '' }}</div>
+          <div class='desc'>{{ item.tid ? item.tid.content : '' }}</div>
         </div>
       </li>
     </ul>
-    <ul class="content-box" v-else>
-      <li class="item" v-for="(item,index) in lists" :key="'hands-'+index">
-        <div class="content-item">
-          <div class="flex">
-            <img class="user" src="/img/bear-200-200.jpg" alt />
-            <div class="column">
-              <div class="title">{{ item.uid ? item.uid.name : '未设置昵称' }}</div>
-              <div class="read">{{ item.created | moment }} 赞了你</div>
+    <ul class='content-box' v-else>
+      <li class='item' v-for='(item,index) in lists' :key="'hands-'+index">
+        <div class='content-item'>
+          <div class='flex'>
+            <img class='user' src='/img/bear-200-200.jpg' alt />
+            <div class='column'>
+              <div class='title'>{{ item.uid ? item.uid.name : '未设置昵称' }}</div>
+              <div class='read'>{{ item.created | moment }} 赞了你</div>
             </div>
           </div>
         </div>
-        <div class="page" v-if="item.cid">
-          <div class="title">{{ item.cid.content }}</div>
+        <div class='page' v-if='item.cid'>
+          <div class='title'>{{ item.cid.content }}</div>
           <!-- <div class="desc">帖子的内容简介</div> -->
         </div>
       </li>
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { getMsg, setMsg, getHands } from '@/api/user'
+// import { getHands, getMsg, setMsg } from '@/api/user'
 
 export default {
   name: 'msg',
@@ -89,25 +89,25 @@ export default {
       }
     },
     getMsgAll () {
-      getMsg({
-        page: this.page,
-        limit: this.limit
-      }).then((res) => {
-        if (res.code === 200) {
-          this.lists = res.data
-          this.total = res.total
-        }
-      })
+      // getMsg({
+      //   page: this.page,
+      //   limit: this.limit
+      // }).then((res) => {
+      //   if (res.code === 200) {
+      //     this.lists = res.data
+      //     this.total = res.total
+      //   }
+      // })
     },
     getHandsAll () {
-      getHands({
-        page: this.page,
-        limit: this.limit
-      }).then((res) => {
-        if (res.code === 200) {
-          this.lists = res.data
-        }
-      })
+      // getHands({
+      //   page: this.page,
+      //   limit: this.limit
+      // }).then((res) => {
+      //   if (res.code === 200) {
+      //     this.lists = res.data
+      //   }
+      // })
     },
     goDetail (item) {
       setTimeout(() => {
@@ -116,21 +116,21 @@ export default {
       this.$router.push({ name: 'detail', params: { tid: item.tid._id } })
     },
     clear (item) {
-      setMsg({ id: item._id }).then((res) => {
-        if (res.code === 200) {
-          this.$Toast('消息已阅！已跳转！')
-          // 设置特定消息已读
-          // this.lists = []
-          // this.getMsgAll()
-          // this.$store.commit('setMessage', { message: this.num - 1 })
-        }
-      })
+      // setMsg({ id: item._id }).then((res) => {
+      //   if (res.code === 200) {
+      //     this.$Toast('消息已阅！已跳转！')
+      //     // 设置特定消息已读
+      //     // this.lists = []
+      //     // this.getMsgAll()
+      //     // this.$store.commit('setMessage', { message: this.num - 1 })
+      //   }
+      // })
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .links {
   width: 100%;
   height: $header-height;

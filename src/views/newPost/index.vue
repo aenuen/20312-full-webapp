@@ -46,7 +46,7 @@ import DataSlots01 from './modules/data_slots01'
 import DataSlots02 from './modules/data_slots02'
 import { integralArray } from 'plugins-methods'
 import { contentUpload } from '@/api/content'
-import { userCount } from '@/api/user'
+import { userDispatch } from '@/api/user'
 import { postDispatch } from '@/api/post'
 
 export default {
@@ -71,7 +71,7 @@ export default {
     }
   },
   mounted () {
-    userCount({ reqIntegral: 1 }).then(({ code, data }) => {
+    userDispatch.use('count', { reqIntegral: 1 }).then(({ code, data }) => {
       if (code === 200) {
         const { countIntegral } = data
         if (countIntegral < 20) {

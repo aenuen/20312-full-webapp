@@ -6,6 +6,7 @@ import { INIT_WEBSOCKET, SET_ISLOGIN, SET_TOKEN, SET_USER } from '@/store/mutati
 import { MessageBox } from 'mint-ui'
 
 import detailRouter from './modules/detail'
+import errorPageRouter from './modules/errorPage'
 import homeRouter from './modules/home'
 import hotRouter from './modules/hot'
 import loginRouter from './modules/login'
@@ -17,6 +18,7 @@ Vue.use(VueRouter)
 
 const routes = [
   ...detailRouter,
+  ...errorPageRouter,
   ...homeRouter,
   ...hotRouter,
   ...loginRouter,

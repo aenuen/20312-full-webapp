@@ -9,7 +9,7 @@ export default [
       {
         path: 'hotPost',
         name: 'hotPost',
-        component: require(/* webpackChunkName: 'hotPost' */ '@/views/hot/post').default
+        component: require(/* webpackChunkName: 'hotPost' */ '@/views/hot/post/index').default
       },
       {
         path: 'hotComment',
@@ -19,7 +19,7 @@ export default [
       {
         path: 'hotSign',
         name: 'hotSign',
-        component: require(/* webpackChunkName: 'hotSign' */ '@/views/hot/sign').default
+        component: require(/* webpackChunkName: 'hotSign' */ '@/views/hot/sign/index').default
       }
     ]
   }

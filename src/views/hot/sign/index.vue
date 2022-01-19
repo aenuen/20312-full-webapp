@@ -1,3 +1,4 @@
+<!--suppress JSUnresolvedFunction -->
 <template>
   <div>
     <div class='wrapper'>
@@ -7,12 +8,7 @@
       </ul>
     </div>
     <div class='content'>
-      <scroll
-        :distance='footerHeight'
-        :isEnd='isEnd'
-        @on-loadTop='loadTop'
-        @on-loadBottom='loadBottom'
-      >
+      <my-scroll :distance='footerHeight' :isEnd='isEnd' @on-loadTop='loadTop' @on-loadBottom='loadBottom'>
         <ul class='content-box'>
           <li class='content-item' v-for='(item,index) in lists' :key="'sign-comments-' + index">
             <div class='num first' v-if='index === 0'>01</div>
@@ -21,39 +17,34 @@
             <div class='num common' v-else-if='index < 9'>{{ '0' + (index + 1) }}</div>
             <div class='num common' v-else-if='index < 50 && index >=9'>{{ index + 1 }}</div>
             <div class='num' v-else></div>
-            <img
-              v-if='current === 0'
-              class='user'
-              :src="item && item.pic & item.pic !=='' ? item.pic: '/img/header.jpg'"
-              alt
+            <img v-if='current === 0' class='user' alt
+                 :src="item && item.avatar & item.avatar !=='' ? item.avatar: '/images/header.jpg'"
             />
-            <img
-              v-else
-              class='user'
-              :src="item && item.uid & item.uid.pic !=='' ? item.uid.pic: '/img/header.jpg'"
-              alt
+            <img v-else class='user' alt
+                 :src="item && item.uid & item.uid.avatar !=='' ? item.uid.avatar: '/images/header.jpg'"
             />
             <div class='column no-between'>
-              <div class='title'>{{ item.uid ? item.uid.name : 'imooc' }}</div>
-              <div class='read' v-if='current === 0'>
-                已经连续签到
-                <span>{{ item.count }}</span> 天
-              </div>
+              <div class='title' v-if='current===0'>{{ item.nickname }}</div>
+              <div v-else>{{ item.uid ? item.uid.nickname : '' }}</div>
+              <div class='read' v-if='current === 0'>已经连续签到<span>{{ item.count }}</span> 天</div>
               <div class='read' v-else>{{ item.created | hourDist }}</div>
             </div>
           </li>
         </ul>
-      </scroll>
+      </my-scroll>
     </div>
-    <my-footer></my-footer>
+    <my-footer />
   </div>
 </template>
 
 <script>
-import { getHotSignRecord } from '@/api/hot'
+import MyFooter from '@/components/Footer'
+import MyScroll from '@/components/Scroll'
+import { publicDispatch } from '@/api/public'
 
 export default {
-  name: 'sign',
+  name: 'HotSign',
+  components: { MyFooter, MyScroll },
   data () {
     return {
       current: 0,
@@ -135,13 +126,12 @@ export default {
       this.init()
     },
     _getHotSignRecord () {
-      const result = getHotSignRecord({
+      return publicDispatch.use('signHot', {
         type: this.localType,
         index: this.current,
         page: this.page,
         limit: this.limit
       })
-      return result
     }
   }
 }

@@ -1,80 +1,81 @@
+<!--suppress JSUnresolvedVariable -->
 <template>
   <div>
-    <my-header title="个人主页" :zIndex="100" />
-    <div class="bg">
-      <div class="wrapper">
-        <div class="user">
+    <my-header title='个人主页' :zIndex='100' />
+    {{ countMyComment }}
+    <div class='bg'>
+      <div class='wrapper'>
+        <div class='user'>
           <img :src="user.avatar || '/img/bear-200-200.jpg'" alt />
         </div>
-        <div class="title">{{ user.nickname || user.email }}</div>
-        <div class="desc">{{ user.regmark || '这家伙很懒，什么也没有留下。' }}</div>
+        <div class='title'>{{ user.nickname || user.email }}</div>
+        <div class='desc'>{{ user.descript || '这家伙很懒，什么也没有留下。' }}</div>
       </div>
-      <ul class="stat">
+      <ul class='stat'>
         <li>
-          <span class="num">{{ countMyComment }}</span>
+          <span class='num'>{{ countMyComment }}</span>
           <span>评论</span>
         </li>
         <li>
-          <span class="num">{{ countMyHands }}</span>
+          <span class='num'>{{ countMyLikes }}</span>
           <span>点赞</span>
         </li>
         <li>
-          <span class="num">{{ countMyCollect }}</span>
+          <span class='num'>{{ countMyCollect }}</span>
           <span>收藏</span>
         </li>
         <li>
-          <span class="num">{{ countHandsOnMe }}</span>
+          <span class='num'>{{ countMyBeLikes }}</span>
           <span>获赞</span>
         </li>
       </ul>
-      <ul class="tabs">
-        <li class="tab-item" :class="{'active': index === 0}" @click="choose(0)">动态</li>
-        <li class="tab-item" :class="{'active': index === 1}" @click="choose(1)">资料</li>
+      <ul class='tabs'>
+        <li class='tab-item' :class="{'active': index === 0}" @click='choose(0)'>动态</li>
+        <li class='tab-item' :class="{'active': index === 1}" @click='choose(1)'>资料</li>
       </ul>
-      <ul class="tabs-content">
-        <li v-if="index === 0">
-          <ul class="content-box">
-            <li class="content-item" v-for="(item, index) in postList" :key="index">
-              <div class="header">
-                <img :src="user.avatar || '/img/bear-200-200.jpg'" class="img" alt />
-                <span>{{ user.name || user.username }}</span>
+      <ul class='tabs-content'>
+        <li v-if='index === 0'>
+          <ul class='content-box'>
+            <li class='content-item' v-for='(item, index) in postList' :key='index'>
+              <div class='header'>
+                <img :src="user.avatar || '/img/bear-200-200.jpg'" class='img' alt />
+                <span>{{ user.username }}</span>
               </div>
-              <div class="title">{{ item.title }}</div>
-              <div class="desc">{{ item.content }}</div>
-              <div class="bottom flex">
+              <div class='title'>{{ item.title }}</div>
+              <div class='desc'>{{ item.content }}</div>
+              <div class='bottom flex'>
                 <div>
-                  <span class="hands">
-                    <svg-icon icon="zan" />
-                  </span>
-                  <span class="reads">
-                    <svg-icon icon="eye-open" />{{ item.reads }}
+                  <span class='reads'>
+                    <svg-icon icon='eye-open' />{{ item.reads }}
                   </span>
                 </div>
                 <div>
-                  <svg-icon icon="delete" />
+                  <span>
+                    <svg-icon icon='delete' />
+                  </span>
                 </div>
               </div>
             </li>
           </ul>
         </li>
-        <li v-if="index === 1">
-          <ul class="info">
+        <li v-if='index === 1'>
+          <ul class='info'>
             <li>基本信息</li>
             <li>
-              <div class="tag">性别</div>
-              <div class="tag-info">{{ user.gender === '0' ? '男' : '女' }}</div>
+              <div class='tag'>性别</div>
+              <div class='tag-info'>{{ user.gender === '0' ? '男' : '女' }}</div>
             </li>
             <li>
-              <div class="tag">家乡</div>
-              <div class="tag-info">{{ user.location }}</div>
+              <div class='tag'>家乡</div>
+              <div class='tag-info'>{{ user.location }}</div>
             </li>
             <li>
-              <div class="tag">职业</div>
-              <div class="tag-info">未填写</div>
+              <div class='tag'>职业</div>
+              <div class='tag-info'>未填写</div>
             </li>
             <li>
-              <div class="tag">社龄</div>
-              <div class="tag-info">{{ user.created }}</div>
+              <div class='tag'>社龄</div>
+              <div class='tag-info'>{{ user.created }}</div>
             </li>
           </ul>
         </li>
@@ -84,8 +85,8 @@
 </template>
 
 <script>
-import { getMyCount } from '@/api/user'
-import { getMyPosts } from '@/api/content'
+import { userDispatch } from '@/api/user'
+import { postMyPost } from '@/api/post'
 
 export default {
   name: 'center',
@@ -93,9 +94,9 @@ export default {
     return {
       index: 0,
       countMyComment: 0,
-      countMyHands: 0,
+      countMyLikes: 0,
       countMyCollect: 0,
-      countHandsOnMe: 0,
+      countMyBeLikes: 0,
       postList: []
     }
   },
@@ -105,18 +106,18 @@ export default {
     }
   },
   mounted () {
-    getMyCount({
+    userDispatch.use('count', {
       reqComment: 1,
       reqHands: 1,
       reqCollect: 1,
       reqHandsOnMe: 1
-    }).then(res => {
-      this.countMyComment = res.countMyComment
-      this.countMyHands = res.countMyHands
-      this.countMyCollect = res.countMyCollect
-      this.countHandsOnMe = res.countHandsOnMe
+    }).then(({ code, data }) => {
+      this.countMyComment = data.countMyComment
+      this.countMyLikes = data.countMyLikes
+      this.countMyCollect = data.countMyCollect
+      this.countMyBeLikes = data.countMyBeLikes
     })
-    getMyPosts({ uid: this.user._id }).then(res => {
+    postMyPost({ uid: this.user._id, page: 1, limit: 10 }).then(res => {
       this.postList = res.data
     })
   },
@@ -128,8 +129,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '~@/assets/styles/_mixin.scss';
+<style lang='scss' scoped>
+@import '~@/assets/styles/_mixin';
+@import '~@/assets/styles/_variables';
 
 .bg {
   background-image: url('~@/assets/images/my_bg@2x.png');

@@ -1,10 +1,10 @@
 // noinspection SpellCheckingInspection
 
 import { SET_HIDE, SET_ISLOGIN, SET_MSG, SET_SID, SET_TOKEN, SET_USER } from '@/store/mutation-types'
-import { publicCaptcha } from '@/api/public'
+import { publicDispatch } from '@/api/public'
 import loginDispatch from '@/api/login'
 import { v4 as uuid } from 'uuid'
-import { updateUserInfo, userSign } from '@/api/user'
+import { userDispatch } from '@/api/user'
 
 export default {
   namespaced: true,
@@ -58,7 +58,7 @@ export default {
         localStorage.setItem('sid', sid)
       }
       commit('SET_SID', sid) // 更改app中的sid，全局vuex
-      return publicCaptcha(sid)
+      return publicDispatch.use('captcha', { sid })
     },
     async login ({ commit, state }, payload) { // 登录
       const result = await loginDispatch.use('signIn', {
@@ -77,8 +77,9 @@ export default {
     // 签到
     async sign ({ commit, state }) {
       const { userInfo } = state
-      const result = await userSign()
-      const { integral, count, lastSign } = result
+      const result = await userDispatch.use('sign')
+      const { data } = result
+      const { integral, count, lastSign } = data
       userInfo.integral = integral
       userInfo.count = count
       userInfo.lastSign = lastSign
@@ -87,8 +88,8 @@ export default {
       return result
     },
     // 更新用户信息
-    async updateUserInfoX ({ commit, state }, form) {
-      const result = await updateUserInfo(form)
+    async updateBasic ({ commit, state }, form) {
+      const result = await userDispatch.use('bisic', form)
       const { code } = result
       if (code === 200) {
         const { userInfo } = state

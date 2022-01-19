@@ -1,59 +1,60 @@
 <template>
   <div>
-    <my-header title="修改设置" />
-    <div class="container">
-      <div class="wrapper">
-        <div class="img">
-          <label for="img">
-            <img :src="form.avatar" alt />
+    <my-header title='修改设置' />
+    <div class='container'>
+      <div class='wrapper'>
+        <div class='img'>
+          <label for='img'>
+            <img :src='form.avatar' alt />
             <i />
+            <input type='file' class='none' id='img' accept='.gif, .jpg, .png' @change='getFile' />
+            <svg-icon icon='camera' class='upload' />
           </label>
-          <input type="file" class="none" id="img" accept=".gif, .jpg, .png" @change="getFile" />
-          <svg-icon icon="camera" class="upload"></svg-icon>
         </div>
       </div>
-      <log>{{ form.avatar }}</log>
-      <mt-field label="账号" placeholder="请输入邮箱" v-model="form.username"></mt-field>
-      <mt-field label="昵称" placeholder="请输入昵称" v-model="form.name"></mt-field>
-      <mt-field label="城市" placeholder="请输入城市" v-model="form.location"></mt-field>
-      <mt-cell title="性别" @click.native="showAction()">
+      <mt-field label='账号' placeholder='请输入邮箱' v-model='form.email' />
+      <mt-field label='昵称' placeholder='请输入昵称' v-model='form.nickname' />
+      <mt-field label='城市' placeholder='请输入城市' v-model='form.location' />
+      <mt-cell title='性别' @click.native='showAction()'>
         <span>
           {{ form.gender && (form.gender === '0' ? '男' : '女') }}
-          <svg-icon icon="arrow-right"></svg-icon>
+          <svg-icon icon='arrow-right' />
         </span>
       </mt-cell>
       <mt-field
-        class="cell-title"
-        label="个人签名"
-        placeholder="介绍一下你吧"
-        type="textarea"
-        rows="3"
-        v-model="form.regmark"
+        class='cell-title'
+        label='个人签名'
+        placeholder='介绍一下你吧'
+        type='textarea'
+        rows='3'
+        v-model='form.signature'
       />
-      <mt-actionsheet :actions="genderAction" v-model="sheetVisible"></mt-actionsheet>
-      <div class="button">
-        <mt-button type="primary" size="large" @click="submit()">确定</mt-button>
-        <mt-button type="default" size="large" @click="$router.back()">取消</mt-button>
+      <mt-actionsheet :actions='genderAction' v-model='sheetVisible' />
+      <div class='button'>
+        <mt-button type='primary' size='large' @click='submit()'>确定</mt-button>
+        <mt-button type='default' size='large' @click='$router.back()'>取消</mt-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import MyHeader from '@/components/Header'
 import { mapActions } from 'vuex'
-import { uploadImg } from '@/api/content'
+import { contentUpload } from '@/api/content'
 
 export default {
-  name: 'settings',
+  name: 'Settings',
+  components: { MyHeader },
   data () {
     return {
       form: {
-        username: '',
-        name: '',
+        email: '',
+        nickname: '',
         gender: '',
         location: '',
-        regmark: '',
-        pic: ''
+        signature: '',
+        avatar: ''
       },
       sheetVisible: false,
       imgFile: '',
@@ -66,21 +67,13 @@ export default {
       this.form[key] = userInfo[key]
     })
     this.genderAction = [
-      {
-        name: '男',
-        value: '0',
-        method: this.setGender
-      },
-      {
-        name: '女',
-        value: '1',
-        method: this.setGender
-      }
+      { name: '男', value: '0', method: this.setGender },
+      { name: '女', value: '1', method: this.setGender }
     ]
   },
   methods: {
     ...mapActions({
-      updateUserInfoX: 'user/updateUserInfoX'
+      updateBasic: 'user/updateBasic'
     }),
     setGender (obj) {
       this.form.gender = obj.value
@@ -97,7 +90,7 @@ export default {
       this.$Loading.show()
       const form = new FormData()
       form.append('file', img, img.name)
-      uploadImg(form).then(res => {
+      contentUpload(form).then(res => {
         this.$Loading.close()
         if (res.code === 200) {
           this.form.pic = res.data
@@ -108,7 +101,7 @@ export default {
     },
     submit () {
       this.$Loading.show('修改中...')
-      this.updateUserInfoX(this.form).then(res => {
+      this.updateBasic(this.form).then(res => {
         this.$Loading.close()
         this.$Toast(res.msg)
       })
@@ -117,7 +110,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .container {
   // padding-top: $header-height + 10;
   padding: $header-height + 10 30px 30px;

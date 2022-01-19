@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { publicPostList } from '@/api/public'
+import { publicDispatch } from '@/api/public'
 import ListItem from '@/components/ListItem'
 import Scroll from '@/components/Scroll'
 
@@ -78,7 +78,7 @@ export default {
     _getList () {
       if (this.isRepeat) return
       if (this.isEnd) return
-      publicPostList({
+      publicDispatch.use('postList', {
         catalog: this.catalog,
         page: this.page,
         limit: this.limit,

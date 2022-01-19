@@ -1,29 +1,28 @@
-<!--suppress JSUnresolvedFunction -->
 <template>
   <div>
     <div class='wrapper'>
-      <ul class='ctrls'>
-        <li :class="{'active': current === 0 }" @click='setIndex(0)'>热门评论</li>
-        <li :class="{'active': current === 1 }" @click='setIndex(1)'>最新评论</li>
+      <ul class='lis'>
+        <li :class="{'active': current === 0 }" @click='setIndex(0)'>3日内</li>
+        <li :class="{'active': current === 1 }" @click='setIndex(1)'>7日内</li>
+        <li :class="{'active': current === 2 }" @click='setIndex(2)'>30日内</li>
+        <li :class="{'active': current === 3 }" @click='setIndex(3)'>全部</li>
       </ul>
     </div>
     <div class='content'>
       <my-scroll :distance='footerHeight' :isEnd='isEnd' @on-loadTop='loadTop' @on-loadBottom='loadBottom'>
         <ul class='content-box'>
-          <li class='content-item' v-for='(item,index) in lists' :key="'sign-comments-' + index">
+          <li class='content-item' v-for='(item,index) in lists' :key="'post-' + index">
             <div class='num first' v-if='index === 0'>01</div>
             <div class='num second' v-else-if='index === 1'>02</div>
             <div class='num third' v-else-if='index === 2'>03</div>
             <div class='num common' v-else-if='index < 9'>{{ '0' + (index + 1) }}</div>
             <div class='num common' v-else-if='index < 50 && index >=9'>{{ index + 1 }}</div>
             <div class='num' v-else></div>
-            <img class='user' :src="item.hUid? item.hUid.avatar : '/bear-200-200.jpg'" alt />
-            <div class='column no-between'>
-              <div class='title'>{{ item.hUid && item.hUid.nickname ? item.hUid.nickname : 'imooc' }}</div>
-              <div class='read' v-if='current === 0'>
-                <span>{{ item.count }}</span> 条评论
+            <div class='column'>
+              <div class='title'>{{ item.title }}</div>
+              <div class='read'>
+                {{ parseInt(item.answer) > 1000 ? ~~(item.answer / 1000).toFixed(1) + 'k' : item.answer }} 评论
               </div>
-              <div class='read' v-else>{{ item.created | dateDist }} 发表了评论</div>
             </div>
           </li>
         </ul>
@@ -39,7 +38,7 @@ import MyScroll from '@/components/Scroll'
 import { publicDispatch } from '@/api/public'
 
 export default {
-  name: 'HotComment',
+  name: 'HotPoast',
   components: { MyFooter, MyScroll },
   data () {
     return {
@@ -103,7 +102,7 @@ export default {
         this.initHeight()
       }
       try {
-        const result = await this._getHotComments()
+        const result = await this._getHotPost()
         handler(result)
       } catch (err) {
         this.isRepeat = false
@@ -118,9 +117,8 @@ export default {
       this.page = 0
       this.init()
     },
-    async _getHotComments () {
-      return await publicDispatch.use('commentHot', {
-        type: this.localType,
+    async _getHotPost () {
+      return await publicDispatch.use('postHot', {
         index: this.current,
         page: this.page,
         limit: this.limit

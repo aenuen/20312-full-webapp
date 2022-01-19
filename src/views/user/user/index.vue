@@ -62,7 +62,7 @@
 <script>
 import MyFooter from '@/components/Footer'
 import { mapGetters } from 'vuex'
-import { userCount } from '@/api/user'
+import { userDispatch } from '@/api/user'
 
 export default {
   name: 'User',
@@ -83,7 +83,7 @@ export default {
         {
           name: '修改密码',
           icon: 'icon-lock2',
-          routeName: 'passwd'
+          routeName: 'password'
         },
         {
           name: '签到中心',
@@ -130,7 +130,7 @@ export default {
   },
   mounted () {
     if (this.isLogin) {
-      userCount({
+      userDispatch.use('count', {
         reqPost: 1, // 统计我的帖子
         reqCollect: 1, // 统计我的收藏
         reqHistory: 1 // 统计我的浏览历史

@@ -5,10 +5,10 @@ export default [
     component: require(/* webpackChunkName: 'user' */ '@/views/user/user/index').default
   },
   { // 修改设置
-    path: '/passwd',
-    name: 'passwd',
+    path: '/password',
+    name: 'password',
     meta: { requiresAuth: true },
-    component: require(/* webpackChunkName: 'passwd' */ '@/views/user/passwd').default
+    component: require(/* webpackChunkName: 'passwd' */ '@/views/user/password/index').default
   },
   { // 修改设置
     path: '/settings',
