@@ -5,19 +5,13 @@
       <my-header title='签到中心' :zIndex='100' />
       <div class='bg'>
         <div class='wrapper'>
-          <span class='fav'>
-            <svg-icon icon='fav2' />
-            <i />
-          </span>
+          <span class='fav'><svg-icon icon='fav2' /><i /></span>
           <span>可用积分：{{ userInfo.integral }}</span>
         </div>
       </div>
       <div class='board'>
         <div class='board-wrapper'>
-          <div class='title'>
-            已经连续签到
-            <span>{{ count }}</span>天
-          </div>
+          <div class='title'>已经连续签到<span>{{ count }}</span>天</div>
           <ul class='sign-bar'>
             <li class='item' v-for='(item,index) in weeks' :key="'weeks' + index">
               <i>{{ checked.includes(index) ? '' : preIntegral[index] }}</i>
@@ -33,50 +27,7 @@
             {{ !isSign ? '签到' : '已签到' }}
           </mt-button>
         </div>
-        <div class='board-wrapper'>
-          <div class='title center'>签到规则</div>
-          <p>1.“签到”可获得的社区积分。规则如下:</p>
-          <table>
-            <thead>
-            <tr>
-              <td>连续签到天数</td>
-              <td>每天活动积分</td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td>小于5天</td>
-              <td>5积分</td>
-            </tr>
-            <tr>
-              <td>小于5天</td>
-              <td>5积分</td>
-            </tr>
-            <tr>
-              <td>大于或等于5天</td>
-              <td>10积分</td>
-            </tr>
-            <tr>
-              <td>大于或等于15天</td>
-              <td>15积分</td>
-            </tr>
-            <tr>
-              <td>大于或等于30天</td>
-              <td>20积分</td>
-            </tr>
-            <tr>
-              <td>大于或等于100天</td>
-              <td>30积分</td>
-            </tr>
-            <tr>
-              <td>大于或等于365天</td>
-              <td>50积分</td>
-            </tr>
-            </tbody>
-          </table>
-          <p>2.中间若有间隔，则连续天数重新计算。</p>
-          <p>3.不可复用程序自动签到，否则积分清零。</p>
-        </div>
+        <IntegralTable />
       </div>
       <div class='sign-modal' v-show='isShow'>
         <div class='title'>恭喜您，签到成功!</div>
@@ -91,14 +42,15 @@
 import MyHeader from '@/components/Header'
 import { mapActions } from 'vuex'
 import { diffNumberDays, getDateDay } from '@/libs/dayjs'
-import { integralCount, pmWeek } from 'plugins-methods'
+import { integralCount, pmWeek, pmDate } from 'plugins-methods'
+import IntegralTable from './components/integralTable'
 
 export default {
   name: 'Sign',
-  components: { MyHeader },
+  components: { MyHeader, IntegralTable },
   data () {
     return {
-      weeks: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+      weeks: [],
       checked: [],
       preIntegral: [],
       isShow: false,
@@ -121,11 +73,10 @@ export default {
   },
   created () {
     this.weeks = pmWeek.weekCn(true)
+    console.log(pmDate.dateOneWeek(new Date()))
   },
   methods: {
-    ...mapActions({
-      sign: 'user/sign'
-    }),
+    ...mapActions({ sign: 'user/sign' }),
     async userSign () {
       if (this.isSign) {
         this.$Toast('您已签到！')

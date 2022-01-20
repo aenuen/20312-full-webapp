@@ -61,6 +61,8 @@
 
 <script>
 import MyFooter from '@/components/Footer'
+import dataLists from './modules/data_lists'
+import dataRoutes from './modules/data_routes'
 import { mapGetters } from 'vuex'
 import { userDispatch } from '@/api/user'
 
@@ -69,88 +71,32 @@ export default {
   components: { MyFooter },
   data () {
     return {
-      lists: [
-        {
-          name: '我的帖子',
-          icon: 'icon-teizi',
-          routeName: 'myPost'
-        },
-        {
-          name: '修改设置',
-          icon: 'icon-setting',
-          routeName: 'settings'
-        },
-        {
-          name: '修改密码',
-          icon: 'icon-lock2',
-          routeName: 'password'
-        },
-        {
-          name: '签到中心',
-          icon: 'icon-qiandao',
-          routeName: 'sign'
-        },
-        {
-          name: '购买记录',
-          icon: 'icon-qiandao',
-          routeName: '404'
-        },
-        {
-          name: '赞助商',
-          icon: 'icon-jiangbei',
-          routeName: '404'
-        }
-      ],
-      routes: [
-        {
-          name: '提问',
-          icon: 'icon-question',
-          path: '/index/ask'
-        },
-        {
-          name: '分享',
-          icon: 'icon-share',
-          path: '/index/share'
-        },
-        {
-          name: '讨论',
-          icon: 'icon-taolun',
-          path: '/index/discuss'
-        },
-        {
-          name: '建议',
-          icon: 'icon-advise',
-          path: '/index/advise'
-        }
-      ],
+      lists: dataLists,
+      routes: dataRoutes,
       countMyPost: 0,
       countMyCollect: 0,
       countMyHistory: 0
     }
   },
-  mounted () {
-    if (this.isLogin) {
-      userDispatch.use('count', {
-        reqPost: 1, // 统计我的帖子
-        reqCollect: 1, // 统计我的收藏
-        reqHistory: 1 // 统计我的浏览历史
-      }).then(({ code, data }) => {
-        if (code === 200) {
-          const { countMyPost, countMyCollect, countMyHistory } = data
-          this.countMyPost = countMyPost
-          this.countMyCollect = countMyCollect
-          this.countMyHistory = countMyHistory
-        }
-      })
-    }
-  },
   computed: {
-    ...mapGetters({
-      user: 'user/user',
-      isLogin: 'user/isLogin'
-    })
+    ...mapGetters({ user: 'user/user', isLogin: 'user/isLogin' })
+  },
+  mounted () {
+    this.getCount()
   },
   methods: {
+    getCount () {
+      if (this.isLogin) {
+        userDispatch.use('count', { reqPost: 1, reqCollect: 1, reqHistory: 1 }).then(({ code, data }) => {
+          if (code === 200) {
+            const { countMyPost, countMyCollect, countMyHistory } = data
+            this.countMyPost = countMyPost
+            this.countMyCollect = countMyCollect
+            this.countMyHistory = countMyHistory
+          }
+        })
+      }
+    },
     goTo (name) {
       this.$router.push({ name })
     }

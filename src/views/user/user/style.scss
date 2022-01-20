@@ -15,7 +15,7 @@ a {
 }
 
 .bg {
-  background-image: url('~@/assets/images/my_bg@2x.png');
+  background-image: url('../../../assets/images/my_bg@2x.png');
   background-repeat: no-repeat;
   background-size: contain;
   position: relative;
@@ -169,43 +169,43 @@ a {
     }
 
     .icon-teizi {
-      background-image: url(~@/assets/images/teizi@2x.png);
+      background-image: url('../../../assets/images/teizi@2x.png');
     }
 
     .icon-setting {
-      background-image: url(~@/assets/images/setting@2x.png);
+      background-image: url("../../../assets/images/setting@2x.png");
     }
 
     .icon-lock2 {
-      background-image: url(~@/assets/images/lock2@2x.png);
+      background-image: url("../../../assets/images/lock2@2x.png");
     }
 
     .icon-qiandao {
-      background-image: url(~@/assets/images/qiandao@2x.png);
+      background-image: url('../../../assets/images/qiandao@2x.png');
     }
 
     .icon-record {
-      background-image: url(~@/assets/images/record@2x.png);
+      background-image: url('../../../assets/images/record@2x.png');
     }
 
     .icon-jiangbei {
-      background-image: url(~@/assets/images/jiangbei@2x.png);
+      background-image: url('../../../assets/images/jiangbei@2x.png');
     }
 
     .icon-question {
-      background-image: url(~@/assets/images/question@2x.png);
+      background-image: url('../../../assets/images/question@2x.png');
     }
 
     .icon-share {
-      background-image: url(~@/assets/images/share@2x.png);
+      background-image: url('../../../assets/images/share@2x.png');
     }
 
-    .icon-taolun {
-      background-image: url(~@/assets/images/taolun@2x.png);
+    .icon-taolun { /* 讨论 */
+      background-image: url('../../../assets/images/taolun@2x.png');
     }
 
-    .icon-advise {
-      background-image: url(~@/assets/images/advice@2x.png);
+    .icon-advise { /*建议*/
+      background-image: url('../../../assets/images/advice@2x.png');
     }
   }
 }
